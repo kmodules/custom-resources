@@ -1,2 +1,2 @@
 # custom-resources
-Shared Custom Resource Definitions for AppsCode Kubernetes Projects
+Shared Kubernetes Custom Resource Definitions for AppsCode Projects
