@@ -8,8 +8,8 @@ import (
 
 const (
 	ResourceKindApp = "AppBinding"
-	ResourceApps    = "apps"
-	ResourceApp     = "app"
+	ResourceApps    = "appbindings"
+	ResourceApp     = "appbinding"
 )
 
 // +genclient

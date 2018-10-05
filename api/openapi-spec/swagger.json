@@ -104,7 +104,7 @@
         }
       }
     },
-    "/apis/appcatalog.appscode.com/v1alpha1/apps": {
+    "/apis/appcatalog.appscode.com/v1alpha1/appbindings": {
       "get": {
         "description": "list or watch objects of kind AppBinding",
         "consumes": [
@@ -205,7 +205,7 @@
         }
       ]
     },
-    "/apis/appcatalog.appscode.com/v1alpha1/namespaces/{namespace}/apps": {
+    "/apis/appcatalog.appscode.com/v1alpha1/namespaces/{namespace}/appbindings": {
       "get": {
         "description": "list or watch objects of kind AppBinding",
         "consumes": [
@@ -460,7 +460,7 @@
         }
       ]
     },
-    "/apis/appcatalog.appscode.com/v1alpha1/namespaces/{namespace}/apps/{name}": {
+    "/apis/appcatalog.appscode.com/v1alpha1/namespaces/{namespace}/appbindings/{name}": {
       "get": {
         "description": "read the specified AppBinding",
         "consumes": [
@@ -674,7 +674,7 @@
         }
       ]
     },
-    "/apis/appcatalog.appscode.com/v1alpha1/watch/apps": {
+    "/apis/appcatalog.appscode.com/v1alpha1/watch/appbindings": {
       "get": {
         "description": "watch individual changes to a list of AppBinding",
         "consumes": [
@@ -775,7 +775,7 @@
         }
       ]
     },
-    "/apis/appcatalog.appscode.com/v1alpha1/watch/namespaces/{namespace}/apps": {
+    "/apis/appcatalog.appscode.com/v1alpha1/watch/namespaces/{namespace}/appbindings": {
       "get": {
         "description": "watch individual changes to a list of AppBinding",
         "consumes": [
@@ -884,7 +884,7 @@
         }
       ]
     },
-    "/apis/appcatalog.appscode.com/v1alpha1/watch/namespaces/{namespace}/apps/{name}": {
+    "/apis/appcatalog.appscode.com/v1alpha1/watch/namespaces/{namespace}/appbindings/{name}": {
       "get": {
         "description": "watch changes to an object of kind AppBinding",
         "consumes": [
