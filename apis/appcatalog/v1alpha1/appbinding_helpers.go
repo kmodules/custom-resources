@@ -29,11 +29,6 @@ func (p AppBinding) CustomResourceDefinition() *apiextensions.CustomResourceDefi
 		EnableStatusSubresource: false,
 		AdditionalPrinterColumns: []apiextensions.CustomResourceColumnDefinition{
 			{
-				Name:     "Version",
-				Type:     "string",
-				JSONPath: ".spec.version",
-			},
-			{
 				Name:     "Age",
 				Type:     "date",
 				JSONPath: ".metadata.creationTimestamp",
