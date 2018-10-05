@@ -12,7 +12,7 @@ func (p AppBinding) CustomResourceDefinition() *apiextensions.CustomResourceDefi
 		Singular:      ResourceApp,
 		Kind:          ResourceKindApp,
 		Categories:    []string{"catalog", "appscode", "all"},
-		ResourceScope: string(apiextensions.NamesAccepted),
+		ResourceScope: string(apiextensions.NamespaceScoped),
 		Versions: []apiextensions.CustomResourceDefinitionVersion{
 			{
 				Name:    SchemeGroupVersion.Version,
