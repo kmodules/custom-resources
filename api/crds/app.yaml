@@ -23,7 +23,7 @@ spec:
     kind: AppBinding
     plural: apps
     singular: app
-  scope: NamesAccepted
+  scope: Namespaced
   validation:
     openAPIV3Schema:
       properties:
