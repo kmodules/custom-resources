@@ -1685,16 +1685,13 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ClientConfig": {
       "description": "ClientConfig contains the information to make a connection with an app",
-      "required": [
-        "InsecureSkipTLSVerify"
-      ],
       "properties": {
-        "CABundle": {
+        "caBundle": {
           "description": "CABundle is a PEM encoded CA bundle which will be used to validate the serving certificate of this app.",
           "type": "string",
           "format": "byte"
         },
-        "InsecureSkipTLSVerify": {
+        "insecureSkipTLSVerify": {
           "description": "InsecureSkipTLSVerify disables TLS certificate verification when communicating with this app. This is strongly discouraged.  You should use the CABundle instead.",
           "type": "boolean"
         },
@@ -1706,6 +1703,10 @@
           },
           "x-kubernetes-patch-merge-key": "port",
           "x-kubernetes-patch-strategy": "merge"
+        },
+        "scheme": {
+          "description": "Specifies which scheme to use, for example: http, https If specified, then it will applied as prefix in this format: scheme:// If not specified, then nothing will be prefixed",
+          "type": "string"
         },
         "service": {
           "description": "`service` is a reference to the service for this app. Either `service` or `url` must be specified.\n\nIf the webhook is running within the cluster, then you should use `service`.",
