@@ -318,12 +318,12 @@ spec:
               description: ClientConfig contains the information to make a connection
                 with an app
               properties:
-                CABundle:
+                caBundle:
                   description: CABundle is a PEM encoded CA bundle which will be used
                     to validate the serving certificate of this app.
                   format: byte
                   type: string
-                InsecureSkipTLSVerify:
+                insecureSkipTLSVerify:
                   description: InsecureSkipTLSVerify disables TLS certificate verification
                     when communicating with this app. This is strongly discouraged.  You
                     should use the CABundle instead.
@@ -345,6 +345,11 @@ spec:
                     - name
                     - port
                   type: array
+                scheme:
+                  description: 'Specifies which scheme to use, for example: http,
+                    https If specified, then it will applied as prefix in this format:
+                    scheme:// If not specified, then nothing will be prefixed'
+                  type: string
                 service:
                   description: ServiceReference holds a reference to Service.legacy.k8s.io
                   properties:
@@ -367,8 +372,6 @@ spec:
 
                     Attempting to use a user or basic auth e.g. "user:password@" is not allowed. Fragments ("#...") and query parameters ("?...") are not allowed, either.
                   type: string
-              required:
-              - InsecureSkipTLSVerify
             defaultParameters:
               description: "RawExtension is used to hold extensions in external versions.\n\nTo
                 use this, make a field which has RawExtension as its type in your
