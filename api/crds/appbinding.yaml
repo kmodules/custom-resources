@@ -328,28 +328,6 @@ spec:
                     when communicating with this app. This is strongly discouraged.  You
                     should use the CABundle instead.
                   type: boolean
-                ports:
-                  description: The list of ports that are exposed by this app.
-                  items:
-                    description: AppPort contains information on app's port.
-                    properties:
-                      name:
-                        description: The name of this port within the app. All ports
-                          within an AppBindingSpec must have unique names.
-                        type: string
-                      port:
-                        description: The port that will be exposed by this app.
-                        format: int32
-                        type: integer
-                    required:
-                    - name
-                    - port
-                  type: array
-                scheme:
-                  description: 'Specifies which scheme to use, for example: http,
-                    https If specified, then it will applied as prefix in this format:
-                    scheme:// If not specified, then nothing will be prefixed'
-                  type: string
                 service:
                   description: ServiceReference holds a reference to Service.legacy.k8s.io
                   properties:
@@ -360,8 +338,19 @@ spec:
                       description: '`path` is an optional URL path which will be sent
                         in any request to this service.'
                       type: string
+                    port:
+                      description: The port that will be exposed by this app.
+                      format: int32
+                      type: integer
+                    scheme:
+                      description: 'Specifies which scheme to use, for example: http,
+                        https If specified, then it will applied as prefix in this
+                        format: scheme:// If not specified, then nothing will be prefixed'
+                      type: string
                   required:
+                  - scheme
                   - name
+                  - port
                 url:
                   description: |-
                     `url` gives the location of the app, in standard URL form (`[scheme://]host:port/path`). Exactly one of `url` or `service` must be specified.
@@ -372,7 +361,7 @@ spec:
 
                     Attempting to use a user or basic auth e.g. "user:password@" is not allowed. Fragments ("#...") and query parameters ("?...") are not allowed, either.
                   type: string
-            defaultParameters:
+            parameters:
               description: "RawExtension is used to hold extensions in external versions.\n\nTo
                 use this, make a field which has RawExtension as its type in your
                 external, versioned struct, and Object in your internal struct. You
