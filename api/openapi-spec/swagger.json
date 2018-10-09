@@ -1651,7 +1651,7 @@
           "description": "ClientConfig defines how to communicate with the app. Required",
           "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ClientConfig"
         },
-        "defaultParameters": {
+        "parameters": {
           "description": "Parameters is a set of the parameters to be used to connect to the app. The inline YAML/JSON payload to be translated into equivalent JSON object.\n\nThe Parameters field is NOT secret or secured in any way and should NEVER be used to hold sensitive information. To set parameters that contain secret information, you should ALWAYS store that information in a Secret.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.runtime.RawExtension"
         },
@@ -1662,24 +1662,6 @@
         "type": {
           "description": "Used to facilitate programmatic handling of application.",
           "type": "string"
-        }
-      }
-    },
-    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppPort": {
-      "description": "AppPort contains information on app's port.",
-      "required": [
-        "name",
-        "port"
-      ],
-      "properties": {
-        "name": {
-          "description": "The name of this port within the app. All ports within an AppBindingSpec must have unique names.",
-          "type": "string"
-        },
-        "port": {
-          "description": "The port that will be exposed by this app.",
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -1695,19 +1677,6 @@
           "description": "InsecureSkipTLSVerify disables TLS certificate verification when communicating with this app. This is strongly discouraged.  You should use the CABundle instead.",
           "type": "boolean"
         },
-        "ports": {
-          "description": "The list of ports that are exposed by this app.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppPort"
-          },
-          "x-kubernetes-patch-merge-key": "port",
-          "x-kubernetes-patch-strategy": "merge"
-        },
-        "scheme": {
-          "description": "Specifies which scheme to use, for example: http, https If specified, then it will applied as prefix in this format: scheme:// If not specified, then nothing will be prefixed",
-          "type": "string"
-        },
         "service": {
           "description": "`service` is a reference to the service for this app. Either `service` or `url` must be specified.\n\nIf the webhook is running within the cluster, then you should use `service`.",
           "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ServiceReference"
@@ -1721,7 +1690,9 @@
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ServiceReference": {
       "description": "ServiceReference holds a reference to Service.legacy.k8s.io",
       "required": [
-        "name"
+        "scheme",
+        "name",
+        "port"
       ],
       "properties": {
         "name": {
@@ -1730,6 +1701,15 @@
         },
         "path": {
           "description": "`path` is an optional URL path which will be sent in any request to this service.",
+          "type": "string"
+        },
+        "port": {
+          "description": "The port that will be exposed by this app.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "scheme": {
+          "description": "Specifies which scheme to use, for example: http, https If specified, then it will applied as prefix in this format: scheme:// If not specified, then nothing will be prefixed",
           "type": "string"
         }
       }
