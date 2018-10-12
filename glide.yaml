@@ -6,17 +6,17 @@ import:
   version: 1de3e0542de65ad8d75452a595886fdd0befb363
 - package: github.com/golang/glog
 - package: k8s.io/api
-  version: kubernetes-1.11.3
+  version: kubernetes-1.12.0
 - package: k8s.io/apimachinery
-  repo: https://github.com/pharmer/apimachinery.git
+  repo: https://github.com/kmodules/apimachinery.git
   vcs: git
-  version: release-1.11.3
+  version: ac-1.12.0
 - package: k8s.io/apiextensions-apiserver
-  version: kubernetes-1.11.3
+  version: kubernetes-1.12.0
 - package: github.com/appscode/kutil
-  version: release-8.0
+  version: release-9.0
 - package: k8s.io/kube-openapi
-  version: 91cfa479c814065e420cee7ed227db0f63a5854e
+  version: 0cf8f7e6ed1d2e3d47d02e3b6e559369af24d803
 - package: golang.org/x/text
   version: b19bf474d317b857955b12035d2c5acb57ce8b01
 - package: golang.org/x/net
@@ -27,3 +27,15 @@ import:
   version: v1.1.0
 - package: github.com/mailru/easyjson
   version: 2f5df55504ebc322e4d52d34df6a1f5b503bf26d
+- package: github.com/cpuguy83/go-md2man
+  version: v1.0.8
+- package: github.com/json-iterator/go
+  version: 1.1.5
+- package: github.com/spf13/cobra
+  version: v0.0.3
+- package: github.com/spf13/pflag
+  version: v1.0.1
+- package: golang.org/x/crypto
+  version: de0752318171da717af4ce24d0a2e8626afaeb11
+- package: github.com/davecgh/go-spew
+  version: v1.1.1
