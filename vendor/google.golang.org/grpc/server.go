@@ -917,12 +917,12 @@ func (s *Server) processStreamingRPC(t transport.ServerTransport, stream *transp
 		stream.SetSendCompress(s.opts.cp.Type())
 	}
 	ss := &serverStream{
-		t:                     t,
-		s:                     stream,
-		p:                     &parser{r: stream},
-		codec:                 s.opts.codec,
-		cp:                    s.opts.cp,
-		dc:                    s.opts.dc,
+		t:     t,
+		s:     stream,
+		p:     &parser{r: stream},
+		codec: s.opts.codec,
+		cp:    s.opts.cp,
+		dc:    s.opts.dc,
 		maxReceiveMessageSize: s.opts.maxReceiveMessageSize,
 		maxSendMessageSize:    s.opts.maxSendMessageSize,
 		trInfo:                trInfo,

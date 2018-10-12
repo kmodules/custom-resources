@@ -73,11 +73,11 @@ func handleV2(mux *http.ServeMux, server *etcdserver.EtcdServer, timeout time.Du
 	}
 
 	mh := &membersHandler{
-		sec:                   sec,
-		server:                server,
-		cluster:               server.Cluster(),
-		timeout:               timeout,
-		clock:                 clockwork.NewRealClock(),
+		sec:     sec,
+		server:  server,
+		cluster: server.Cluster(),
+		timeout: timeout,
+		clock:   clockwork.NewRealClock(),
 		clientCertAuthEnabled: server.Cfg.ClientCertAuthEnabled,
 	}
 
