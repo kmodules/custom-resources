@@ -1,5 +1,5 @@
 hash: 58569da3971e837bb6f1f532db2277f7be98d9e34c444278865e4f359883cced
-updated: 2018-10-12T10:14:09.948021044-07:00
+updated: 2018-10-12T10:24:30.974236874-07:00
 imports:
 - name: bitbucket.org/ww/goautoneg
   version: 75cd24fc2f2c2a2088577d12123ddee5f54e0675
@@ -403,7 +403,6 @@ imports:
   - pkg/util/framer
   - pkg/util/intstr
   - pkg/util/json
-  - pkg/util/jsonmergepatch
   - pkg/util/mergepatch
   - pkg/util/naming
   - pkg/util/net
