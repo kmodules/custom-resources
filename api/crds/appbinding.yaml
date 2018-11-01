@@ -382,13 +382,7 @@ spec:
                 RawExtension, turning it into the correct object type, and storing
                 it in the Object. (TODO: In the case where the object is of an unknown
                 type, a runtime.Unknown object will be created and stored.)"
-              properties:
-                Raw:
-                  description: Raw is the underlying serialization of this object.
-                  format: byte
-                  type: string
-              required:
-              - Raw
+              type: object
             secret:
               description: LocalObjectReference contains enough information to let
                 you locate the referenced object inside the same namespace.
