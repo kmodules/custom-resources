@@ -61,6 +61,11 @@ func (a AppBinding) URL() (*url.URL, error) {
 	return nil, errors.New("connection url is missing")
 }
 
+const (
+	KeyUsername = "username"
+	KeyPassword = "password"
+)
+
 func (a AppBinding) URLTemplate() (string, error) {
 	u, err := a.URL()
 	if err != nil {
@@ -71,5 +76,5 @@ func (a AppBinding) URLTemplate() (string, error) {
 	if i < 0 {
 		return "", errors.New("url is missing scheme")
 	}
-	return fmt.Sprintf(rawurl[:i+3] + "{{username}}:{{password}}@" + rawurl[i+3:]), nil
+	return fmt.Sprintf(rawurl[:i+3] + fmt.Sprintf("{{%s}}:{{%s}}@", KeyUsername, KeyPassword) + rawurl[i+3:]), nil
 }
