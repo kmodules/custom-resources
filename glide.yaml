@@ -25,6 +25,8 @@ import:
   version: 95c6576299259db960f6c5b9b69ea52422860fce
 - package: github.com/golang/protobuf
   version: v1.1.0
+- package: github.com/kubernetes-incubator/service-catalog
+  version: v0.1.38
 - package: github.com/mailru/easyjson
   version: 2f5df55504ebc322e4d52d34df6a1f5b503bf26d
 - package: github.com/cpuguy83/go-md2man

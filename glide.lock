@@ -1,5 +1,5 @@
-hash: 58569da3971e837bb6f1f532db2277f7be98d9e34c444278865e4f359883cced
-updated: 2018-12-19T01:27:05.594281201-08:00
+hash: 14503465fe1303d758d25e44ad284dc0929432a10568260769222701bb544ebd
+updated: 2018-12-19T01:53:27.606939635-08:00
 imports:
 - name: bitbucket.org/ww/goautoneg
   version: 75cd24fc2f2c2a2088577d12123ddee5f54e0675
@@ -183,6 +183,12 @@ imports:
   version: 9316a62528ac99aaecb4e47eadd6dc8aa6533d58
 - name: github.com/json-iterator/go
   version: 1624edc4454b8682399def8740d46db5e4362ba4
+- name: github.com/kubernetes-incubator/service-catalog
+  version: 19c1ae7eba0f132641a23cfa939ab141d6070a06
+  subpackages:
+  - pkg/apis/servicecatalog
+  - pkg/apis/servicecatalog/v1beta1
+  - pkg/filter
 - name: github.com/mailru/easyjson
   version: 2f5df55504ebc322e4d52d34df6a1f5b503bf26d
   subpackages:
