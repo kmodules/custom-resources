@@ -1596,6 +1596,43 @@
       "description": "RawExtension is used to hold extensions in external versions.\n\nTo use this, make a field which has RawExtension as its type in your external, versioned struct, and Object in your internal struct. You also need to register your various plugin types.\n\n// Internal package: type MyAPIObject struct {\n\truntime.TypeMeta `json:\",inline\"`\n\tMyPlugin runtime.Object `json:\"myPlugin\"`\n} type PluginA struct {\n\tAOption string `json:\"aOption\"`\n}\n\n// External package: type MyAPIObject struct {\n\truntime.TypeMeta `json:\",inline\"`\n\tMyPlugin runtime.RawExtension `json:\"myPlugin\"`\n} type PluginA struct {\n\tAOption string `json:\"aOption\"`\n}\n\n// On the wire, the JSON will look something like this: {\n\t\"kind\":\"MyAPIObject\",\n\t\"apiVersion\":\"v1\",\n\t\"myPlugin\": {\n\t\t\"kind\":\"PluginA\",\n\t\t\"aOption\":\"foo\",\n\t},\n}\n\nSo what happens? Decode first uses json or yaml to unmarshal the serialized data into your external MyAPIObject. That causes the raw JSON to be stored, but not unpacked. The next step is to copy (using pkg/conversion) into the internal struct. The runtime package's DefaultScheme has conversion functions installed which will unpack the JSON stored in RawExtension, turning it into the correct object type, and storing it in the Object. (TODO: In the case where the object is of an unknown type, a runtime.Unknown object will be created and stored.)",
       "type": "object"
     },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AddKeyTransform": {
+      "description": "AddKeyTransform specifies that Service Catalog should add an additional entry to the Secret associated with the ServiceBinding. For example, given the following AddKeyTransform:\n    {\"key\": \"CONNECTION_POOL_SIZE\", \"stringValue\": \"10\"}\nthe following entry will appear in the Secret:\n    \"CONNECTION_POOL_SIZE\": \"10\"\nNote that this transform should only be used to add non-sensitive (non-secret) values. To add sensitive information, the AddKeysFromTransform should be used instead.",
+      "required": [
+        "key",
+        "value",
+        "stringValue",
+        "jsonPathExpression"
+      ],
+      "properties": {
+        "jsonPathExpression": {
+          "description": "The JSONPath expression, the result of which will be added to the Secret under the specified key. For example, given the following credentials: { \"foo\": { \"bar\": \"foobar\" } } and the jsonPathExpression \"{.foo.bar}\", the value \"foobar\" will be stored in the credentials Secret under the specified key.",
+          "type": "string"
+        },
+        "key": {
+          "description": "The name of the key to add",
+          "type": "string"
+        },
+        "stringValue": {
+          "description": "The string (non-binary) value to add to the Secret under the specified key.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The binary value (possibly non-string) to add to the Secret under the specified key. If both value and stringValue are specified, then value is ignored and stringValue is stored.",
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AddKeysFromTransform": {
+      "description": "AddKeysFromTransform specifies that Service Catalog should merge an existing secret into the Secret associated with the ServiceBinding. For example, given the following AddKeysFromTransform:\n    {\"secretRef\": {\"namespace\": \"foo\", \"name\": \"bar\"}}\nthe entries of the Secret \"bar\" from Namespace \"foo\" will be merged into the credentials Secret.",
+      "properties": {
+        "secretRef": {
+          "description": "The reference to the Secret that should be merged into the credentials Secret.",
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ObjectReference"
+        }
+      }
+    },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBinding": {
       "description": "AppBinding defines a generic user application.",
       "properties": {
@@ -1670,6 +1707,13 @@
           "description": "Secret is the name of the secret to create in the AppBinding's namespace that will hold the credentials associated with the AppBinding.",
           "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
         },
+        "secretTransforms": {
+          "description": "List of transformations that should be applied to the credentials associated with the ServiceBinding before they are inserted into the Secret.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.SecretTransform"
+          }
+        },
         "type": {
           "description": "Used to facilitate programmatic handling of application.",
           "type": "string"
@@ -1695,6 +1739,69 @@
         "url": {
           "description": "`url` gives the location of the app, in standard URL form (`[scheme://]host:port/path`). Exactly one of `url` or `service` must be specified.\n\nThe `host` should not refer to a service running in the cluster; use the `service` field instead. The host might be resolved via external DNS in some apiservers (e.g., `kube-apiserver` cannot resolve in-cluster DNS as that would be a layering violation). `host` may also be an IP address.\n\nA path is optional, and if present may be any string permissible in a URL. You may use the path to pass an arbitrary string to the app, for example, a cluster identifier.\n\nAttempting to use a user or basic auth e.g. \"user:password@\" is not allowed. Fragments (\"#...\") and query parameters (\"?...\") are not allowed, either.",
           "type": "string"
+        }
+      }
+    },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ObjectReference": {
+      "description": "ObjectReference contains enough information to let you locate the referenced object.",
+      "properties": {
+        "name": {
+          "description": "Name of the referent.",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace of the referent.",
+          "type": "string"
+        }
+      }
+    },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RemoveKeyTransform": {
+      "description": "RemoveKeyTransform specifies that one of the credentials keys returned from the broker should not be included in the credentials Secret.",
+      "required": [
+        "key"
+      ],
+      "properties": {
+        "key": {
+          "description": "The key to remove from the Secret",
+          "type": "string"
+        }
+      }
+    },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RenameKeyTransform": {
+      "description": "RenameKeyTransform specifies that one of the credentials keys returned from the broker should be renamed and stored under a different key in the Secret. For example, given the following credentials entry:\n    \"USERNAME\": \"johndoe\"\nand the following RenameKeyTransform:\n    {\"from\": \"USERNAME\", \"to\": \"DB_USER\"}\nthe following entry will appear in the Secret:\n    \"DB_USER\": \"johndoe\"",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "description": "The name of the key to rename",
+          "type": "string"
+        },
+        "to": {
+          "description": "The new name for the key",
+          "type": "string"
+        }
+      }
+    },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.SecretTransform": {
+      "description": "SecretTransform is a single transformation that is applied to the credentials returned from the broker before they are inserted into the Secret associated with the ServiceBinding. Because different brokers providing the same type of service may each return a different credentials structure, users can specify the transformations that should be applied to the Secret to adapt its entries to whatever the service consumer expects. For example, the credentials returned by the broker may include the key \"USERNAME\", but the consumer requires the username to be exposed under the key \"DB_USER\" instead. To have the Service Catalog transform the Secret, the following SecretTransform must be specified in ServiceBinding.spec.secretTransform: - {\"renameKey\": {\"from\": \"USERNAME\", \"to\": \"DB_USER\"}} Only one of the SecretTransform's members may be specified.",
+      "properties": {
+        "addKey": {
+          "description": "AddKey represents a transform that adds an additional key to the credentials Secret",
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AddKeyTransform"
+        },
+        "addKeysFrom": {
+          "description": "AddKeysFrom represents a transform that merges all the entries of an existing Secret into the credentials Secret",
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AddKeysFromTransform"
+        },
+        "removeKey": {
+          "description": "RemoveKey represents a transform that removes a credentials Secret entry",
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RemoveKeyTransform"
+        },
+        "renameKey": {
+          "description": "RenameKey represents a transform that renames a credentials Secret entry's key",
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RenameKeyTransform"
         }
       }
     },
