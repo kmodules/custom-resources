@@ -1,17 +1,17 @@
 hash: 58569da3971e837bb6f1f532db2277f7be98d9e34c444278865e4f359883cced
-updated: 2018-11-01T00:18:33.22243047-07:00
+updated: 2018-12-19T01:27:05.594281201-08:00
 imports:
 - name: bitbucket.org/ww/goautoneg
   version: 75cd24fc2f2c2a2088577d12123ddee5f54e0675
 - name: github.com/appscode/go
-  version: a6d58457b39324ead2ffb1f24be7a0a638c9f112
+  version: 584aaa73af837f112c0a471be398ea837341c330
   subpackages:
   - context
   - log
   - runtime
   - types
 - name: github.com/appscode/kutil
-  version: 3ea05651189cbff8994265360eb150d4c3513859
+  version: d9fb2e606bf2c196a8cd8cff13097f531d686a44
   subpackages:
   - apiextensions/v1beta1
   - openapi
@@ -164,7 +164,7 @@ imports:
 - name: github.com/google/uuid
   version: 8c31c18f31ede9fc8eae72290a7e7a8064e9b3e3
 - name: github.com/googleapis/gnostic
-  version: 68f4ded48ba9414dab2ae69b3f0d69971da73aa5
+  version: 0c5108395e2debce0d731cf0287ddf7242066aba
   subpackages:
   - OpenAPIv2
   - compiler
@@ -280,7 +280,7 @@ imports:
   subpackages:
   - rate
 - name: google.golang.org/appengine
-  version: 4a4468ece617fc8205e99368fa2200e9d1fad421
+  version: 12d5545dc1cfa6047a286d5e853841b6471f4c19
   subpackages:
   - internal
   - internal/base
@@ -319,7 +319,7 @@ imports:
 - name: gopkg.in/natefinch/lumberjack.v2
   version: 20b71e5b60d756d3d2f80def009790325acc2b23
 - name: gopkg.in/yaml.v2
-  version: 53feefa2559fb8dfa8d81baad31be332c97d6c77
+  version: 670d4cfef0544295bc27a114dbac37980d83185a
 - name: k8s.io/api
   version: fd83cbc87e7632ccd8bbab63d2b673d4e0c631cc
   subpackages:
@@ -634,6 +634,7 @@ imports:
   - rest
   - rest/watch
   - testing
+  - third_party/forked/golang/template
   - tools/auth
   - tools/cache
   - tools/clientcmd
@@ -650,6 +651,7 @@ imports:
   - util/flowcontrol
   - util/homedir
   - util/integer
+  - util/jsonpath
   - util/retry
 - name: k8s.io/kube-openapi
   version: 0cf8f7e6ed1d2e3d47d02e3b6e559369af24d803
@@ -659,4 +661,6 @@ imports:
   - pkg/handler
   - pkg/util
   - pkg/util/proto
+- name: sigs.k8s.io/yaml
+  version: fd68e9863619f6ec2fdd8625fe1f02e7c877e480
 testImports: []
