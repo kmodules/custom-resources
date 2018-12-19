@@ -13685,6 +13685,13 @@ func schema_custom_resources_apis_appcatalog_v1alpha1_ServiceReference(ref commo
 							Format:      "",
 						},
 					},
+					"query": {
+						SchemaProps: spec.SchemaProps{
+							Description: "`query` is optional encoded query string, without '?' which will be sent in any request to this service.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
 				},
 				Required: []string{"scheme", "name", "port"},
 			},

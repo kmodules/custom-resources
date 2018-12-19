@@ -1826,6 +1826,10 @@
           "type": "integer",
           "format": "int32"
         },
+        "query": {
+          "description": "`query` is optional encoded query string, without '?' which will be sent in any request to this service.",
+          "type": "string"
+        },
         "scheme": {
           "description": "Specifies which scheme to use, for example: http, https If specified, then it will applied as prefix in this format: scheme:// If not specified, then nothing will be prefixed",
           "type": "string"
