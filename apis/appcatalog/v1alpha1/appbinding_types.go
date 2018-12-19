@@ -119,7 +119,12 @@ type ServiceReference struct {
 	// `path` is an optional URL path which will be sent in any request to
 	// this service.
 	// +optional
-	Path *string `json:"path,omitempty"`
+	Path string `json:"path,omitempty"`
+
+	// `query` is optional encoded query string, without '?' which will be
+	// sent in any request to this service.
+	// +optional
+	Query string `json:"query,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
