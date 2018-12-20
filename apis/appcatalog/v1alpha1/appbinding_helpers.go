@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 
 	crdutils "github.com/appscode/kutil/apiextensions/v1beta1"
@@ -105,16 +106,17 @@ func (a AppBinding) Hostname() (string, error) {
 	return "", errors.New("connection url is missing")
 }
 
-func (a AppBinding) Port() (string, error) {
+func (a AppBinding) Port() (int32, error) {
 	c := a.Spec.ClientConfig
 	if c.URL != nil {
 		u, err := url.Parse(*c.URL)
 		if err != nil {
-			return "", err
+			return 0, err
 		}
-		return u.Port(), nil
+		port, err := strconv.ParseInt(u.Port(), 10, 32)
+		return int32(port), err
 	} else if c.Service != nil {
-		return fmt.Sprintf("%d", c.Service.Port), nil
+		return c.Service.Port, nil
 	}
-	return "", errors.New("connection url is missing")
+	return 0, errors.New("connection url is missing")
 }
