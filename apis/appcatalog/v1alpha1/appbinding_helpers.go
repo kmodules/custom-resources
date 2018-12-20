@@ -76,3 +76,45 @@ func (a AppBinding) URLTemplate() (string, error) {
 	}
 	return fmt.Sprintf(rawurl[:i+3] + auth + rawurl[i+3:]), nil
 }
+
+func (a AppBinding) Host() (string, error) {
+	c := a.Spec.ClientConfig
+	if c.URL != nil {
+		u, err := url.Parse(*c.URL)
+		if err != nil {
+			return "", err
+		}
+		return u.Host, nil
+	} else if c.Service != nil {
+		return fmt.Sprintf("%s.%s.svc:%d", c.Service.Name, a.Namespace, c.Service.Port), nil
+	}
+	return "", errors.New("connection url is missing")
+}
+
+func (a AppBinding) Hostname() (string, error) {
+	c := a.Spec.ClientConfig
+	if c.URL != nil {
+		u, err := url.Parse(*c.URL)
+		if err != nil {
+			return "", err
+		}
+		return u.Hostname(), nil
+	} else if c.Service != nil {
+		return fmt.Sprintf("%s.%s.svc", c.Service.Name, a.Namespace), nil
+	}
+	return "", errors.New("connection url is missing")
+}
+
+func (a AppBinding) Port() (string, error) {
+	c := a.Spec.ClientConfig
+	if c.URL != nil {
+		u, err := url.Parse(*c.URL)
+		if err != nil {
+			return "", err
+		}
+		return u.Port(), nil
+	} else if c.Service != nil {
+		return fmt.Sprintf("%d", c.Service.Port), nil
+	}
+	return "", errors.New("connection url is missing")
+}
