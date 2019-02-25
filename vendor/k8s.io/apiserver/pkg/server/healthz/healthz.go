@@ -18,16 +18,22 @@ package healthz
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"crypto/x509"
+	"encoding/hex"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
 
-	"github.com/golang/glog"
+	"k8s.io/klog"
 
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/client-go/util/cert"
 )
 
 // HealthzChecker is a named healthz checker.
@@ -76,7 +82,7 @@ func (l *log) Check(_ *http.Request) error {
 	l.startOnce.Do(func() {
 		l.lastVerified.Store(time.Now())
 		go wait.Forever(func() {
-			glog.Flush()
+			klog.Flush()
 			l.lastVerified.Store(time.Now())
 		}, time.Minute)
 	})
@@ -108,11 +114,11 @@ func InstallHandler(mux mux, checks ...HealthzChecker) {
 // result in a panic.
 func InstallPathHandler(mux mux, path string, checks ...HealthzChecker) {
 	if len(checks) == 0 {
-		glog.V(5).Info("No default health checks specified. Installing the ping handler.")
+		klog.V(5).Info("No default health checks specified. Installing the ping handler.")
 		checks = []HealthzChecker{PingHealthz}
 	}
 
-	glog.V(5).Info("Installing healthz checkers:", strings.Join(checkerNames(checks...), ", "))
+	klog.V(5).Info("Installing healthz checkers:", formatQuoted(checkerNames(checks...)...))
 
 	mux.Handle(path, handleRootHealthz(checks...))
 	for _, check := range checks {
@@ -141,21 +147,42 @@ func (c *healthzCheck) Check(r *http.Request) error {
 	return c.check(r)
 }
 
+// getExcludedChecks extracts the health check names to be excluded from the query param
+func getExcludedChecks(r *http.Request) sets.String {
+	checks, found := r.URL.Query()["exclude"]
+	if found {
+		return sets.NewString(checks...)
+	}
+	return sets.NewString()
+}
+
 // handleRootHealthz returns an http.HandlerFunc that serves the provided checks.
 func handleRootHealthz(checks ...HealthzChecker) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		failed := false
+		excluded := getExcludedChecks(r)
 		var verboseOut bytes.Buffer
 		for _, check := range checks {
+			// no-op the check if we've specified we want to exclude the check
+			if excluded.Has(check.Name()) {
+				excluded.Delete(check.Name())
+				fmt.Fprintf(&verboseOut, "[+]%v excluded: ok\n", check.Name())
+				continue
+			}
 			if err := check.Check(r); err != nil {
 				// don't include the error since this endpoint is public.  If someone wants more detail
 				// they should have explicit permission to the detailed checks.
-				glog.V(6).Infof("healthz check %v failed: %v", check.Name(), err)
+				klog.V(6).Infof("healthz check %v failed: %v", check.Name(), err)
 				fmt.Fprintf(&verboseOut, "[-]%v failed: reason withheld\n", check.Name())
 				failed = true
 			} else {
 				fmt.Fprintf(&verboseOut, "[+]%v ok\n", check.Name())
 			}
+		}
+		if excluded.Len() > 0 {
+			fmt.Fprintf(&verboseOut, "warn: some health checks cannot be excluded: no matches for %v\n", formatQuoted(excluded.List()...))
+			klog.Warningf("cannot exclude some health checks, no health checks are installed matching %v",
+				formatQuoted(excluded.List()...))
 		}
 		// always be verbose on failure
 		if failed {
@@ -187,14 +214,86 @@ func adaptCheckToHandler(c func(r *http.Request) error) http.HandlerFunc {
 
 // checkerNames returns the names of the checks in the same order as passed in.
 func checkerNames(checks ...HealthzChecker) []string {
-	if len(checks) > 0 {
-		// accumulate the names of checks for printing them out.
-		checkerNames := make([]string, 0, len(checks))
-		for _, check := range checks {
-			// quote the Name so we can disambiguate
-			checkerNames = append(checkerNames, fmt.Sprintf("%q", check.Name()))
+	// accumulate the names of checks for printing them out.
+	checkerNames := make([]string, 0, len(checks))
+	for _, check := range checks {
+		checkerNames = append(checkerNames, check.Name())
+	}
+	return checkerNames
+}
+
+// formatQuoted returns a formatted string of the health check names,
+// preserving the order passed in.
+func formatQuoted(names ...string) string {
+	quoted := make([]string, 0, len(names))
+	for _, name := range names {
+		quoted = append(quoted, fmt.Sprintf("%q", name))
+	}
+	return strings.Join(quoted, ",")
+}
+
+// CertHealthz returns true if tls.crt is unchanged when checked
+func NewCertHealthz(certFile string) (HealthzChecker, error) {
+	var hash string
+	if certFile != "" {
+		var err error
+		hash, err = calculateHash(certFile)
+		if err != nil {
+			return nil, err
 		}
-		return checkerNames
+	}
+	return &certChecker{certFile: certFile, initialHash: hash}, nil
+}
+
+// certChecker fails health check if server certificate changes.
+type certChecker struct {
+	certFile    string
+	initialHash string
+}
+
+func (certChecker) Name() string {
+	return "cert-checker"
+}
+
+// CertHealthz is a health check that returns true.
+func (c certChecker) Check(_ *http.Request) error {
+	if c.certFile == "" {
+		return nil
+	}
+	hash, err := calculateHash(c.certFile)
+	if err != nil {
+		return err
+	}
+	if c.initialHash != hash {
+		return fmt.Errorf("certificate hash changed from %s to %s", c.initialHash, hash)
 	}
 	return nil
+}
+
+func calculateHash(certFile string) (string, error) {
+	crtBytes, err := ioutil.ReadFile(certFile)
+	if err != nil {
+		return "", fmt.Errorf("failed to read certificate `%s`. Reason: %v", certFile, err)
+	}
+	crt, err := cert.ParseCertsPEM(crtBytes)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse certificate `%s`. Reason: %v", certFile, err)
+	}
+	return Hash(crt[0]), nil
+}
+
+// ref: https://github.com/kubernetes/kubernetes/blob/197fc67693c2391dcbc652fc185ba85b5ef82a8e/cmd/kubeadm/app/util/pubkeypin/pubkeypin.go#L77
+
+const (
+	// formatSHA256 is the prefix for pins that are full-length SHA-256 hashes encoded in base 16 (hex)
+	formatSHA256 = "sha256"
+)
+
+// Hash calculates the SHA-256 hash of the Subject Public Key Information (SPKI)
+// object in an x509 certificate (in DER encoding). It returns the full hash as a
+// hex encoded string (suitable for passing to Set.Allow).
+func Hash(certificate *x509.Certificate) string {
+	// ref: https://tools.ietf.org/html/rfc5280#section-4.1.2.7
+	spkiHash := sha256.Sum256(certificate.RawSubjectPublicKeyInfo)
+	return formatSHA256 + ":" + strings.ToLower(hex.EncodeToString(spkiHash[:]))
 }

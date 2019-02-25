@@ -3,8 +3,6 @@ package main
 import (
 	"github.com/appscode/go/log"
 	gort "github.com/appscode/go/runtime"
-	crdutils "github.com/appscode/kutil/apiextensions/v1beta1"
-	"github.com/appscode/kutil/openapi"
 	"github.com/go-openapi/spec"
 	"github.com/golang/glog"
 	"io/ioutil"
@@ -12,6 +10,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/kube-openapi/pkg/common"
+	crdutils "kmodules.xyz/client-go/apiextensions/v1beta1"
+	"kmodules.xyz/client-go/openapi"
 	"kmodules.xyz/custom-resources/apis"
 	cataloginstall "kmodules.xyz/custom-resources/apis/appcatalog/install"
 	catalog "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
