@@ -1,0 +1,12 @@
+language: go
+go:
+ - 1.x
+ - tip
+
+go_import_path: kmodules.xyz/custom-resources
+
+install: true
+
+script:
+ - go build -v ./...
+ - go test -v ./...
