@@ -156,13 +156,6 @@
         },
         {
           "uniqueItems": true,
-          "type": "boolean",
-          "description": "If true, partially initialized resources are included in the response.",
-          "name": "includeUninitialized",
-          "in": "query"
-        },
-        {
-          "uniqueItems": true,
           "type": "string",
           "description": "A selector to restrict the list of returned objects by their labels. Defaults to everything.",
           "name": "labelSelector",
@@ -242,13 +235,6 @@
           },
           {
             "uniqueItems": true,
-            "type": "boolean",
-            "description": "If true, partially initialized resources are included in the response.",
-            "name": "includeUninitialized",
-            "in": "query"
-          },
-          {
-            "uniqueItems": true,
             "type": "string",
             "description": "A selector to restrict the list of returned objects by their labels. Defaults to everything.",
             "name": "labelSelector",
@@ -323,6 +309,20 @@
             "schema": {
               "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBinding"
             }
+          },
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
+            "name": "dryRun",
+            "in": "query"
+          },
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "description": "fieldManager is a name associated with the actor or entity that is making these changes. The value must be less than or 128 characters long, and only contain printable characters, as defined by https://golang.org/pkg/unicode/#IsPrint.",
+            "name": "fieldManager",
+            "in": "query"
           }
         ],
         "responses": {
@@ -382,13 +382,6 @@
             "type": "string",
             "description": "A selector to restrict the list of returned objects by their fields. Defaults to everything.",
             "name": "fieldSelector",
-            "in": "query"
-          },
-          {
-            "uniqueItems": true,
-            "type": "boolean",
-            "description": "If true, partially initialized resources are included in the response.",
-            "name": "includeUninitialized",
             "in": "query"
           },
           {
@@ -518,6 +511,20 @@
             "schema": {
               "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBinding"
             }
+          },
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
+            "name": "dryRun",
+            "in": "query"
+          },
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "description": "fieldManager is a name associated with the actor or entity that is making these changes. The value must be less than or 128 characters long, and only contain printable characters, as defined by https://golang.org/pkg/unicode/#IsPrint.",
+            "name": "fieldManager",
+            "in": "query"
           }
         ],
         "responses": {
@@ -562,7 +569,6 @@
           {
             "name": "body",
             "in": "body",
-            "required": true,
             "schema": {
               "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.DeleteOptions"
             }
@@ -644,6 +650,27 @@
             "schema": {
               "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Patch"
             }
+          },
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
+            "name": "dryRun",
+            "in": "query"
+          },
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "description": "fieldManager is a name associated with the actor or entity that is making these changes. The value must be less than or 128 characters long, and only contain printable characters, as defined by https://golang.org/pkg/unicode/#IsPrint. This field is required for apply requests (application/apply-patch) but optional for non-apply patch types (JsonPatch, MergePatch, StrategicMergePatch).",
+            "name": "fieldManager",
+            "in": "query"
+          },
+          {
+            "uniqueItems": true,
+            "type": "boolean",
+            "description": "Force is going to \"force\" Apply requests. It means user will re-acquire conflicting fields owned by other people. Force flag must be unset for non-apply patch requests.",
+            "name": "force",
+            "in": "query"
           }
         ],
         "responses": {
@@ -739,13 +766,6 @@
         },
         {
           "uniqueItems": true,
-          "type": "boolean",
-          "description": "If true, partially initialized resources are included in the response.",
-          "name": "includeUninitialized",
-          "in": "query"
-        },
-        {
-          "uniqueItems": true,
           "type": "string",
           "description": "A selector to restrict the list of returned objects by their labels. Defaults to everything.",
           "name": "labelSelector",
@@ -836,13 +856,6 @@
           "type": "string",
           "description": "A selector to restrict the list of returned objects by their fields. Defaults to everything.",
           "name": "fieldSelector",
-          "in": "query"
-        },
-        {
-          "uniqueItems": true,
-          "type": "boolean",
-          "description": "If true, partially initialized resources are included in the response.",
-          "name": "includeUninitialized",
           "in": "query"
         },
         {
@@ -949,13 +962,6 @@
         },
         {
           "uniqueItems": true,
-          "type": "boolean",
-          "description": "If true, partially initialized resources are included in the response.",
-          "name": "includeUninitialized",
-          "in": "query"
-        },
-        {
-          "uniqueItems": true,
           "type": "string",
           "description": "A selector to restrict the list of returned objects by their labels. Defaults to everything.",
           "name": "labelSelector",
@@ -1018,6 +1024,7 @@
   "definitions": {
     "io.k8s.api.core.v1.LocalObjectReference": {
       "description": "LocalObjectReference contains enough information to let you locate the referenced object inside the same namespace.",
+      "type": "object",
       "properties": {
         "name": {
           "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
@@ -1027,6 +1034,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.APIGroup": {
       "description": "APIGroup contains the name, the supported versions, and the preferred version of a group.",
+      "type": "object",
       "required": [
         "name",
         "versions"
@@ -1066,13 +1074,14 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "",
-          "version": "v1",
-          "kind": "APIGroup"
+          "kind": "APIGroup",
+          "version": "v1"
         }
       ]
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.APIGroupList": {
       "description": "APIGroupList is a list of APIGroup, to allow clients to discover the API at /apis.",
+      "type": "object",
       "required": [
         "groups"
       ],
@@ -1096,13 +1105,14 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "",
-          "version": "v1",
-          "kind": "APIGroupList"
+          "kind": "APIGroupList",
+          "version": "v1"
         }
       ]
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.APIResource": {
       "description": "APIResource specifies the name of a resource and whether it is namespaced.",
+      "type": "object",
       "required": [
         "name",
         "singularName",
@@ -1145,6 +1155,10 @@
           "description": "singularName is the singular name of the resource.  This allows clients to handle plural and singular opaquely. The singularName is more correct for reporting status on a single item and both singular and plural are allowed from the kubectl CLI interface.",
           "type": "string"
         },
+        "storageVersionHash": {
+          "description": "The hash value of the storage version, the version this resource is converted to when written to the data store. Value must be treated as opaque by clients. Only equality comparison on the value is valid. This is an alpha feature and may change or be removed in the future. The field is populated by the apiserver only if the StorageVersionHash feature gate is enabled. This field will remain optional even if it graduates.",
+          "type": "string"
+        },
         "verbs": {
           "description": "verbs is a list of supported kube verbs (this includes get, list, watch, create, update, patch, delete, deletecollection, and proxy)",
           "type": "array",
@@ -1160,6 +1174,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.APIResourceList": {
       "description": "APIResourceList is a list of APIResource, it is used to expose the name of the resources supported in a specific group and version, and if the resource is namespaced.",
+      "type": "object",
       "required": [
         "groupVersion",
         "resources"
@@ -1188,13 +1203,14 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "",
-          "version": "v1",
-          "kind": "APIResourceList"
+          "kind": "APIResourceList",
+          "version": "v1"
         }
       ]
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.DeleteOptions": {
       "description": "DeleteOptions may be provided when deleting an API object.",
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources",
@@ -1232,18 +1248,23 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "",
-          "version": "v1",
-          "kind": "DeleteOptions"
+          "kind": "DeleteOptions",
+          "version": "v1"
         },
         {
           "group": "appcatalog.appscode.com",
-          "version": "v1alpha1",
-          "kind": "DeleteOptions"
+          "kind": "DeleteOptions",
+          "version": "v1alpha1"
         }
       ]
     },
+    "io.k8s.apimachinery.pkg.apis.meta.v1.Fields": {
+      "description": "Fields stores a set of fields in a data structure like a Trie. To understand how this is used, see: https://github.com/kubernetes-sigs/structured-merge-diff",
+      "type": "object"
+    },
     "io.k8s.apimachinery.pkg.apis.meta.v1.GroupVersionForDiscovery": {
       "description": "GroupVersion contains the \"group/version\" and \"version\" string of a version. It is made a struct to keep extensibility.",
+      "type": "object",
       "required": [
         "groupVersion",
         "version"
@@ -1261,6 +1282,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.Initializer": {
       "description": "Initializer is information about an initializer that has not yet completed.",
+      "type": "object",
       "required": [
         "name"
       ],
@@ -1273,6 +1295,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.Initializers": {
       "description": "Initializers tracks the progress of initialization.",
+      "type": "object",
       "required": [
         "pending"
       ],
@@ -1294,6 +1317,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta": {
       "description": "ListMeta describes metadata that synthetic resources must have, including lists and various status objects. A resource may have only one of {ObjectMeta, ListMeta}.",
+      "type": "object",
       "properties": {
         "continue": {
           "description": "continue may be set if the user set a limit on the number of items returned, and indicates that the server has more data available. The value is opaque and may be used to issue another request to the endpoint that served this list to retrieve the next set of available objects. Continuing a consistent list may not be possible if the server configuration has changed or more than a few minutes have passed. The resourceVersion field returned when using this continue value will be identical to the value in the first response, unless you have received this token from an error message.",
@@ -1309,8 +1333,35 @@
         }
       }
     },
+    "io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsEntry": {
+      "description": "ManagedFieldsEntry is a workflow-id, a FieldSet and the group version of the resource that the fieldset applies to.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the version of this resource that this field set applies to. The format is \"group/version\" just like the top-level APIVersion field. It is necessary to track the version of a field set because it cannot be automatically converted.",
+          "type": "string"
+        },
+        "fields": {
+          "description": "Fields identifies a set of fields.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Fields"
+        },
+        "manager": {
+          "description": "Manager is an identifier of the workflow managing these fields.",
+          "type": "string"
+        },
+        "operation": {
+          "description": "Operation is the type of operation which lead to this ManagedFieldsEntry being created. The only valid values for this field are 'Apply' and 'Update'.",
+          "type": "string"
+        },
+        "time": {
+          "description": "Time is timestamp of when these fields were set. It should always be empty if Operation is 'Apply'",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        }
+      }
+    },
     "io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta": {
       "description": "ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.",
+      "type": "object",
       "properties": {
         "annotations": {
           "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
@@ -1354,7 +1405,7 @@
           "format": "int64"
         },
         "initializers": {
-          "description": "An initializer is a controller which enforces some system invariant at object creation time. This field is a list of initializers that have not yet acted on this object. If nil or empty, this object has been completely initialized. Otherwise, the object is considered uninitialized and is hidden (in list/watch and get calls) from clients that haven't explicitly asked to observe uninitialized objects.\n\nWhen an object is created, the system will populate this list with the current set of initializers. Only privileged users may set or modify this list. Once it is empty, it may not be modified further by any user.",
+          "description": "An initializer is a controller which enforces some system invariant at object creation time. This field is a list of initializers that have not yet acted on this object. If nil or empty, this object has been completely initialized. Otherwise, the object is considered uninitialized and is hidden (in list/watch and get calls) from clients that haven't explicitly asked to observe uninitialized objects.\n\nWhen an object is created, the system will populate this list with the current set of initializers. Only privileged users may set or modify this list. Once it is empty, it may not be modified further by any user.\n\nDEPRECATED - initializers are an alpha field and will be removed in v1.15.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Initializers"
         },
         "labels": {
@@ -1362,6 +1413,13 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
+          }
+        },
+        "managedFields": {
+          "description": "ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow. This is mostly for internal housekeeping, and users typically shouldn't need to set or understand this field. A workflow can be the user's name, a controller's name, or the name of a specific apply path like \"ci-cd\". The set of fields is always in the version that the workflow used when modifying the object.\n\nThis field is alpha and can be changed or removed without notice.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ManagedFieldsEntry"
           }
         },
         "name": {
@@ -1396,7 +1454,8 @@
       }
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.OwnerReference": {
-      "description": "OwnerReference contains enough information to let you identify an owning object. Currently, an owning object must be in the same namespace, so there is no namespace field.",
+      "description": "OwnerReference contains enough information to let you identify an owning object. An owning object must be in the same namespace as the dependent, or be cluster-scoped, so there is no namespace field.",
+      "type": "object",
       "required": [
         "apiVersion",
         "kind",
@@ -1431,11 +1490,17 @@
       }
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.Patch": {
-      "description": "Patch is provided to give a concrete name and type to the Kubernetes PATCH request body."
+      "description": "Patch is provided to give a concrete name and type to the Kubernetes PATCH request body.",
+      "type": "object"
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.Preconditions": {
       "description": "Preconditions must be fulfilled before an operation (update, delete, etc.) is carried out.",
+      "type": "object",
       "properties": {
+        "resourceVersion": {
+          "description": "Specifies the target ResourceVersion",
+          "type": "string"
+        },
         "uid": {
           "description": "Specifies the target UID.",
           "type": "string"
@@ -1444,6 +1509,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.ServerAddressByClientCIDR": {
       "description": "ServerAddressByClientCIDR helps the client to determine the server address that they should use, depending on the clientCIDR that they match.",
+      "type": "object",
       "required": [
         "clientCIDR",
         "serverAddress"
@@ -1461,6 +1527,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.Status": {
       "description": "Status is a return value for calls that don't return other objects.",
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources",
@@ -1499,18 +1566,19 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "",
-          "version": "v1",
-          "kind": "Status"
+          "kind": "Status",
+          "version": "v1"
         },
         {
           "group": "appcatalog.appscode.com",
-          "version": "v1alpha1",
-          "kind": "Status"
+          "kind": "Status",
+          "version": "v1alpha1"
         }
       ]
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.StatusCause": {
       "description": "StatusCause provides more information about an api.Status failure, including cases when multiple errors are encountered.",
+      "type": "object",
       "properties": {
         "field": {
           "description": "The field of the resource that has caused this error, as named by its JSON serialization. May include dot and postfix notation for nested attributes. Arrays are zero-indexed.  Fields may appear more than once in an array of causes due to fields having multiple errors. Optional.\n\nExamples:\n  \"name\" - the field \"name\" on the current resource\n  \"items[0].name\" - the field \"name\" on the first array entry in \"items\"",
@@ -1528,6 +1596,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.StatusDetails": {
       "description": "StatusDetails is a set of additional properties that MAY be set by the server to provide additional information about a response. The Reason field of a Status object defines what attributes will be set. Clients must ignore fields that do not match the defined type of each attribute, and should assume that any attribute may be empty, invalid, or under defined.",
+      "type": "object",
       "properties": {
         "causes": {
           "description": "The Causes array includes more details associated with the StatusReason failure. Not all StatusReasons may provide detailed causes.",
@@ -1566,6 +1635,7 @@
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.WatchEvent": {
       "description": "Event represents a single event to a watched resource.",
+      "type": "object",
       "required": [
         "type",
         "object"
@@ -1582,13 +1652,13 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "",
-          "version": "v1",
-          "kind": "WatchEvent"
+          "kind": "WatchEvent",
+          "version": "v1"
         },
         {
           "group": "appcatalog.appscode.com",
-          "version": "v1alpha1",
-          "kind": "WatchEvent"
+          "kind": "WatchEvent",
+          "version": "v1alpha1"
         }
       ]
     },
@@ -1598,6 +1668,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AddKeyTransform": {
       "description": "AddKeyTransform specifies that Service Catalog should add an additional entry to the Secret associated with the ServiceBinding. For example, given the following AddKeyTransform:\n    {\"key\": \"CONNECTION_POOL_SIZE\", \"stringValue\": \"10\"}\nthe following entry will appear in the Secret:\n    \"CONNECTION_POOL_SIZE\": \"10\"\nNote that this transform should only be used to add non-sensitive (non-secret) values. To add sensitive information, the AddKeysFromTransform should be used instead.",
+      "type": "object",
       "required": [
         "key",
         "value",
@@ -1626,6 +1697,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AddKeysFromTransform": {
       "description": "AddKeysFromTransform specifies that Service Catalog should merge an existing secret into the Secret associated with the ServiceBinding. For example, given the following AddKeysFromTransform:\n    {\"secretRef\": {\"namespace\": \"foo\", \"name\": \"bar\"}}\nthe entries of the Secret \"bar\" from Namespace \"foo\" will be merged into the credentials Secret.",
+      "type": "object",
       "properties": {
         "secretRef": {
           "description": "The reference to the Secret that should be merged into the credentials Secret.",
@@ -1635,6 +1707,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBinding": {
       "description": "AppBinding defines a generic user application.",
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources",
@@ -1654,13 +1727,14 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "appcatalog.appscode.com",
-          "version": "v1alpha1",
-          "kind": "AppBinding"
+          "kind": "AppBinding",
+          "version": "v1alpha1"
         }
       ]
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBindingList": {
       "description": "AppBindingList is a list of Apps",
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources",
@@ -1684,13 +1758,14 @@
       "x-kubernetes-group-version-kind": [
         {
           "group": "appcatalog.appscode.com",
-          "version": "v1alpha1",
-          "kind": "AppBindingList"
+          "kind": "AppBindingList",
+          "version": "v1alpha1"
         }
       ]
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBindingSpec": {
       "description": "AppBindingSpec is the spec for app",
+      "type": "object",
       "required": [
         "clientConfig"
       ],
@@ -1722,6 +1797,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ClientConfig": {
       "description": "ClientConfig contains the information to make a connection with an app",
+      "type": "object",
       "properties": {
         "caBundle": {
           "description": "CABundle is a PEM encoded CA bundle which will be used to validate the serving certificate of this app.",
@@ -1744,6 +1820,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ObjectReference": {
       "description": "ObjectReference contains enough information to let you locate the referenced object.",
+      "type": "object",
       "properties": {
         "name": {
           "description": "Name of the referent.",
@@ -1757,6 +1834,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RemoveKeyTransform": {
       "description": "RemoveKeyTransform specifies that one of the credentials keys returned from the broker should not be included in the credentials Secret.",
+      "type": "object",
       "required": [
         "key"
       ],
@@ -1769,6 +1847,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RenameKeyTransform": {
       "description": "RenameKeyTransform specifies that one of the credentials keys returned from the broker should be renamed and stored under a different key in the Secret. For example, given the following credentials entry:\n    \"USERNAME\": \"johndoe\"\nand the following RenameKeyTransform:\n    {\"from\": \"USERNAME\", \"to\": \"DB_USER\"}\nthe following entry will appear in the Secret:\n    \"DB_USER\": \"johndoe\"",
+      "type": "object",
       "required": [
         "from",
         "to"
@@ -1786,6 +1865,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.SecretTransform": {
       "description": "SecretTransform is a single transformation that is applied to the credentials returned from the broker before they are inserted into the Secret associated with the ServiceBinding. Because different brokers providing the same type of service may each return a different credentials structure, users can specify the transformations that should be applied to the Secret to adapt its entries to whatever the service consumer expects. For example, the credentials returned by the broker may include the key \"USERNAME\", but the consumer requires the username to be exposed under the key \"DB_USER\" instead. To have the Service Catalog transform the Secret, the following SecretTransform must be specified in ServiceBinding.spec.secretTransform: - {\"renameKey\": {\"from\": \"USERNAME\", \"to\": \"DB_USER\"}} Only one of the SecretTransform's members may be specified.",
+      "type": "object",
       "properties": {
         "addKey": {
           "description": "AddKey represents a transform that adds an additional key to the credentials Secret",
@@ -1807,6 +1887,7 @@
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ServiceReference": {
       "description": "ServiceReference holds a reference to Service.legacy.k8s.io",
+      "type": "object",
       "required": [
         "scheme",
         "name",
