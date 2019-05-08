@@ -11,12 +11,13 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/json-iterator/go v1.1.6
-	github.com/kubernetes-incubator/service-catalog v0.1.38
+	github.com/kubernetes-incubator/service-catalog v0.1.43
 	github.com/mailru/easyjson v0.0.0-20190403194419-1ea4449da983 // indirect
 	github.com/prometheus/client_golang v0.9.3-0.20190127221311-3c4408c8b829 // indirect
 	github.com/prometheus/common v0.3.0 // indirect
 	golang.org/x/crypto v0.0.0-20190506204251-e1dfcc566284 // indirect
 	golang.org/x/net v0.0.0-20190503192946-f4e77d36d62c // indirect
+	golang.org/x/sys v0.0.0-20190508100423-12bbe5a7a520 // indirect
 	google.golang.org/genproto v0.0.0-20190502173448-54afdca5d873 // indirect
 	google.golang.org/grpc v1.20.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
