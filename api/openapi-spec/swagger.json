@@ -1790,7 +1790,11 @@
           }
         },
         "type": {
-          "description": "Used to facilitate programmatic handling of application.",
+          "description": "Type used to facilitate programmatic handling of application.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version used to facilitate programmatic handling of application.",
           "type": "string"
         }
       }
