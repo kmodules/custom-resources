@@ -14,7 +14,7 @@ func newAppBinding(t string) *v1alpha1.AppBinding {
 	}
 }
 
-func TestGroupResource(t *testing.T) {
+func TestAppGroupResource(t *testing.T) {
 	cases := []struct {
 		x        *v1alpha1.AppBinding
 		group    string
@@ -32,9 +32,9 @@ func TestGroupResource(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(string(c.x.Spec.Type), func(t *testing.T) {
-			g, r := c.x.GroupResource()
+			g, r := c.x.AppGroupResource()
 			if g != c.group || r != c.resource {
-				t.Errorf("Failed GroupResource test for '%v': expected (%v,%v), got (%v,%v)", c.x.Spec.Type, c.group, c.resource, g, r)
+				t.Errorf("Failed to parse AppGroupResource for '%v': expected (%v,%v), got (%v,%v)", c.x.Spec.Type, c.group, c.resource, g, r)
 			}
 		})
 	}

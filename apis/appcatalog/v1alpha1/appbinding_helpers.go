@@ -121,7 +121,7 @@ func (a AppBinding) Port() (int32, error) {
 	return 0, errors.New("connection url is missing")
 }
 
-func (a AppBinding) GroupResource() (string, string) {
+func (a AppBinding) AppGroupResource() (string, string) {
 	t := string(a.Spec.Type)
 	idx := strings.LastIndexByte(t, '/')
 	if idx == -1 {
