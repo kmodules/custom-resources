@@ -1,5 +1,5 @@
 /*
-Copyright 2018 AppsCode Inc.
+Copyright The Kmodules Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package install
 
 import (
+	"kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
+
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	"kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
 )
 
 // Install registers the API group and adds types to a scheme
