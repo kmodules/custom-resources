@@ -1,45 +1,36 @@
+/*
+Copyright The Kmodules Authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
 import (
-	"github.com/appscode/go/log"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
+	"kmodules.xyz/client-go/openapi"
+	cataloginstall "kmodules.xyz/custom-resources/apis/appcatalog/install"
+	catalog "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
+
 	gort "github.com/appscode/go/runtime"
 	"github.com/go-openapi/spec"
 	"github.com/golang/glog"
-	"io/ioutil"
-	crd_api "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/kube-openapi/pkg/common"
-	crdutils "kmodules.xyz/client-go/apiextensions/v1beta1"
-	"kmodules.xyz/client-go/openapi"
-	"kmodules.xyz/custom-resources/apis"
-	cataloginstall "kmodules.xyz/custom-resources/apis/appcatalog/install"
-	catalog "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
-	"os"
-	"path/filepath"
 )
-
-func generateCRDDefinitions() {
-	apis.EnableStatusSubresource = true
-
-	err := os.MkdirAll(filepath.Join(gort.GOPath(), "/src/kmodules.xyz/custom-resources/api/crds"), 0755)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	crds := []*crd_api.CustomResourceDefinition{
-		catalog.AppBinding{}.CustomResourceDefinition(),
-	}
-	for _, crd := range crds {
-		filename := filepath.Join(gort.GOPath(), "/src/kmodules.xyz/custom-resources/api/crds", crd.Spec.Names.Singular+".yaml")
-		f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-		crdutils.MarshallCrd(f, crd, "yaml")
-		f.Close()
-	}
-}
 
 func generateSwaggerJson() {
 	var (
@@ -53,7 +44,7 @@ func generateSwaggerJson() {
 		Scheme: Scheme,
 		Codecs: Codecs,
 		Info: spec.InfoProps{
-			Title:   "KubeDB",
+			Title:   "Kmodules",
 			Version: "v0",
 			Contact: &spec.ContactInfo{
 				Name:  "AppsCode Inc.",
@@ -68,6 +59,7 @@ func generateSwaggerJson() {
 		OpenAPIDefinitions: []common.GetOpenAPIDefinitions{
 			catalog.GetOpenAPIDefinitions,
 		},
+		//nolint:govet
 		Resources: []openapi.TypeInfo{
 			{catalog.SchemeGroupVersion, catalog.ResourceApps, catalog.ResourceKindApp, true},
 		},
@@ -88,6 +80,5 @@ func generateSwaggerJson() {
 }
 
 func main() {
-	generateCRDDefinitions()
 	generateSwaggerJson()
 }

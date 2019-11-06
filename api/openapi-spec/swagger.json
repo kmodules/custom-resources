@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "KubeDB",
+    "title": "Kmodules",
     "contact": {
       "name": "AppsCode Inc.",
       "url": "https://appscode.com",
@@ -1706,7 +1706,6 @@
       }
     },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.AppBinding": {
-      "description": "AppBinding defines a generic user application.",
       "type": "object",
       "properties": {
         "apiVersion": {
