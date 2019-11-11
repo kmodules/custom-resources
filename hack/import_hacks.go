@@ -14,8 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package util
+package hack
 
-import jsoniter "github.com/json-iterator/go"
-
-var json = jsoniter.ConfigFastest
+import (
+	_ "k8s.io/apimachinery/pkg/api/resource"
+	_ "k8s.io/apimachinery/pkg/apis/meta/v1"
+	_ "k8s.io/apimachinery/pkg/apis/meta/v1beta1"
+	_ "k8s.io/apimachinery/pkg/runtime"
+	_ "k8s.io/apimachinery/pkg/runtime/schema"
+	_ "k8s.io/apimachinery/pkg/util/intstr"
+)
