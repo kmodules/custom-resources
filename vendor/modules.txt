@@ -6,7 +6,6 @@ github.com/PuerkitoBio/purell
 github.com/PuerkitoBio/urlesc
 # github.com/appscode/go v0.0.0-20191025021232-311ac347b3ef
 github.com/appscode/go/runtime
-github.com/appscode/go/types
 # github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973
 github.com/beorn7/perks/quantile
 # github.com/coreos/etcd v3.3.13+incompatible
@@ -222,14 +221,12 @@ k8s.io/api/admission/v1beta1
 # k8s.io/apiextensions-apiserver v0.0.0-20190516231611-bf6753f2aa24 => k8s.io/apiextensions-apiserver v0.0.0-20190315093550-53c4693659ed
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions
-k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1beta1
-k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme
 # k8s.io/apimachinery v0.0.0-20190508063446-a3da69d3723c => github.com/kmodules/apimachinery v0.0.0-20190508045248-a52a97a7a2bf
+k8s.io/apimachinery/pkg/runtime/schema
 k8s.io/apimachinery/pkg/runtime
 k8s.io/apimachinery/pkg/util/runtime
 k8s.io/apimachinery/pkg/api/resource
 k8s.io/apimachinery/pkg/apis/meta/v1
-k8s.io/apimachinery/pkg/runtime/schema
 k8s.io/apimachinery/pkg/util/intstr
 k8s.io/apimachinery/pkg/runtime/serializer
 k8s.io/apimachinery/pkg/watch
@@ -240,15 +237,14 @@ k8s.io/apimachinery/pkg/util/jsonmergepatch
 k8s.io/apimachinery/pkg/util/wait
 k8s.io/apimachinery/pkg/apis/meta/v1beta1
 k8s.io/apimachinery/pkg/conversion
+k8s.io/apimachinery/pkg/util/json
 k8s.io/apimachinery/pkg/conversion/queryparams
 k8s.io/apimachinery/pkg/util/errors
-k8s.io/apimachinery/pkg/util/json
 k8s.io/apimachinery/pkg/util/naming
 k8s.io/apimachinery/pkg/util/sets
 k8s.io/apimachinery/pkg/api/apitesting/roundtrip
 k8s.io/apimachinery/pkg/fields
 k8s.io/apimachinery/pkg/selection
-k8s.io/apimachinery/pkg/apis/meta/v1/unstructured
 k8s.io/apimachinery/pkg/version
 k8s.io/apimachinery/pkg/runtime/serializer/streaming
 k8s.io/apimachinery/pkg/util/net
@@ -272,6 +268,7 @@ k8s.io/apimachinery/pkg/api/equality
 k8s.io/apimachinery/pkg/apis/meta/fuzzer
 k8s.io/apimachinery/pkg/util/framer
 k8s.io/apimachinery/pkg/util/yaml
+k8s.io/apimachinery/pkg/apis/meta/v1/unstructured
 k8s.io/apimachinery/third_party/forked/golang/json
 k8s.io/apimachinery/pkg/api/validation
 k8s.io/apimachinery/pkg/api/validation/path
@@ -542,7 +539,6 @@ k8s.io/utils/integer
 k8s.io/utils/buffer
 k8s.io/utils/trace
 # kmodules.xyz/client-go v0.0.0-20191106181350-088754189f4e
-kmodules.xyz/client-go/apiextensions/v1beta1
 kmodules.xyz/client-go
 kmodules.xyz/client-go/openapi
 # sigs.k8s.io/structured-merge-diff v0.0.0-20190302045857-e85c7b244fd2 => sigs.k8s.io/structured-merge-diff v0.0.0-20190302045857-e85c7b244fd2

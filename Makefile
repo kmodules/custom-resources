@@ -49,11 +49,11 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_PKGS := apis client util
+SRC_PKGS := api apis client util
 SRC_DIRS := $(SRC_PKGS) hack/gencrd # directories which hold app source (not vendored)
 
 DOCKER_PLATFORMS := linux/amd64 linux/arm linux/arm64
-BIN_PLATFORMS    := $(DOCKER_PLATFORMS) windows/amd64 darwin/amd64
+BIN_PLATFORMS    := $(DOCKER_PLATFORMS)
 
 # Used internally.  Users should pass GOOS and/or GOARCH.
 OS   := $(if $(GOOS),$(GOOS),$(shell go env GOOS))
@@ -63,7 +63,7 @@ BASEIMAGE_PROD   ?= gcr.io/distroless/static
 BASEIMAGE_DBG    ?= debian:stretch
 
 GO_VERSION       ?= 1.12.12
-BUILD_IMAGE      ?= appscode/golang-dev:$(GO_VERSION)-stretch
+BUILD_IMAGE      ?= appscode/golang-dev:$(GO_VERSION)
 
 OUTBIN = bin/$(OS)_$(ARCH)/$(BIN)
 ifeq ($(OS),windows)
@@ -199,11 +199,25 @@ gen-crd-protos:
 			--apimachinery-packages=-k8s.io/apimachinery/pkg/api/resource,-k8s.io/apimachinery/pkg/apis/meta/v1,-k8s.io/apimachinery/pkg/apis/meta/v1beta1,-k8s.io/apimachinery/pkg/runtime,-k8s.io/apimachinery/pkg/runtime/schema,-k8s.io/apimachinery/pkg/util/intstr \
 			--packages=-k8s.io/api/core/v1,kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1
 
+.PHONY: gen-bindata
+gen-bindata:
+	@docker run                                                 \
+	    -i                                                      \
+	    --rm                                                    \
+	    -u $$(id -u):$$(id -g)                                  \
+	    -v $$(pwd):/src                                         \
+	    -w /src/api/crds                                        \
+		-v /tmp:/.cache                                         \
+	    --env HTTP_PROXY=$(HTTP_PROXY)                          \
+	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
+	    $(BUILD_IMAGE)                                          \
+	    go-bindata -ignore=\\.go -ignore=\\.DS_Store -mode=0644 -modtime=1573722179 -o bindata.go -pkg crds ./...
+
 .PHONY: manifests
-manifests: gen-crds label-crds
+manifests: gen-crds label-crds gen-bindata
 
 .PHONY: gen
-gen: clientset openapi manifests gen-crd-protos
+gen: clientset gen-crd-protos manifests openapi
 
 fmt: $(BUILD_DIRS)
 	@docker run                                                 \

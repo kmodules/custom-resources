@@ -34,6 +34,7 @@ require (
 	k8s.io/kube-openapi v0.0.0-20190502190224-411b2483e503
 	k8s.io/utils v0.0.0-20190506122338-8fab8cb257d5 // indirect
 	kmodules.xyz/client-go v0.0.0-20191106181350-088754189f4e
+	sigs.k8s.io/yaml v1.1.0
 )
 
 replace (
