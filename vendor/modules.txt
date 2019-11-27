@@ -591,7 +591,7 @@ k8s.io/component-base/featuregate
 k8s.io/component-base/metrics
 k8s.io/component-base/metrics/legacyregistry
 k8s.io/component-base/version
-# k8s.io/klog v0.4.0 => k8s.io/klog v0.3.0
+# k8s.io/klog v0.4.0 => k8s.io/klog v0.4.0
 k8s.io/klog
 # k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf => k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf
 k8s.io/kube-openapi/pkg/builder
@@ -606,7 +606,7 @@ k8s.io/utils/integer
 k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.0.0-20191119114815-0623bbd17a44
+# kmodules.xyz/client-go v0.0.0-20191127054604-26981530831d
 kmodules.xyz/client-go
 kmodules.xyz/client-go/openapi
 # sigs.k8s.io/structured-merge-diff v0.0.0-20190817042607-6149e4549fca => sigs.k8s.io/structured-merge-diff v0.0.0-20190817042607-6149e4549fca
