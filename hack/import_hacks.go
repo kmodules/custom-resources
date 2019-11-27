@@ -17,9 +17,9 @@ limitations under the License.
 package hack
 
 import (
+	_ "github.com/gogo/protobuf/gogoproto"
 	_ "k8s.io/apimachinery/pkg/api/resource"
 	_ "k8s.io/apimachinery/pkg/apis/meta/v1"
-	_ "k8s.io/apimachinery/pkg/apis/meta/v1beta1"
 	_ "k8s.io/apimachinery/pkg/runtime"
 	_ "k8s.io/apimachinery/pkg/runtime/schema"
 	_ "k8s.io/apimachinery/pkg/util/intstr"
