@@ -134,7 +134,8 @@ openapi: $(addprefix openapi-, $(subst :,_, $(API_GROUPS)))
 		-w $(DOCKER_REPO_ROOT)                           \
 		--env HTTP_PROXY=$(HTTP_PROXY)                   \
 		--env HTTPS_PROXY=$(HTTPS_PROXY)                 \
-	    --env GOFLAGS="-mod=vendor"                      \
+		--env GO111MODULE=on                             \
+		--env GOFLAGS="-mod=vendor"                      \
 		$(BUILD_IMAGE)                                   \
 		go run hack/gencrd/main.go
 
