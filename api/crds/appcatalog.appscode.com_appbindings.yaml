@@ -26,6 +26,7 @@ spec:
     listKind: AppBindingList
     plural: appbindings
     singular: appbinding
+  preserveUnknownFields: false
   scope: Namespaced
   subresources: {}
   validation:

@@ -20,7 +20,7 @@ REPO     := $(notdir $(shell pwd))
 BIN      := custom-resources
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
-CRD_OPTIONS          ?= "crd:trivialVersions=true"
+CRD_OPTIONS          ?= "crd:trivialVersions=true,preserveUnknownFields=false"
 # https://github.com/appscodelabs/gengo-builder
 CODE_GENERATOR_IMAGE ?= appscode/gengo:release-1.16
 API_GROUPS           ?= appcatalog:v1alpha1
