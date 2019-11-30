@@ -7,6 +7,7 @@ require (
 	github.com/go-openapi/spec v0.19.2
 	github.com/gogo/protobuf v1.2.2-0.20190723190241-65acae22fc9d
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+	github.com/google/gofuzz v1.0.0
 	github.com/json-iterator/go v1.1.7
 	github.com/kubernetes-incubator/service-catalog v0.2.2
 	github.com/kubernetes-sigs/service-catalog v0.2.2 // indirect
@@ -16,6 +17,7 @@ require (
 	k8s.io/client-go v0.0.0-20191114101535-6c5935290e33
 	k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf
 	kmodules.xyz/client-go v0.0.0-20191127054604-26981530831d
+	kmodules.xyz/crd-schema-fuzz v0.0.0-20191129174258-81f984340891
 	sigs.k8s.io/yaml v1.1.0
 )
 
