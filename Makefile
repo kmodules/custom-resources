@@ -62,7 +62,7 @@ ARCH := $(if $(GOARCH),$(GOARCH),$(shell go env GOARCH))
 BASEIMAGE_PROD   ?= gcr.io/distroless/static
 BASEIMAGE_DBG    ?= debian:stretch
 
-GO_VERSION       ?= 1.13.4
+GO_VERSION       ?= 1.14
 BUILD_IMAGE      ?= appscode/golang-dev:$(GO_VERSION)
 
 OUTBIN = bin/$(OS)_$(ARCH)/$(BIN)
@@ -179,8 +179,8 @@ crds_to_patch := appcatalog.appscode.com_appbindings.yaml
 .PHONY: label-crds
 label-crds: $(BUILD_DIRS)
 	@for f in api/crds/*.yaml; do \
-		echo "applying app=catalog label to $$f"; \
-		kubectl label --overwrite -f $$f --local=true -o yaml app=catalog > bin/crd.yaml; \
+		echo "applying app.kubernetes.io/name=catalog label to $$f"; \
+		kubectl label --overwrite -f $$f --local=true -o yaml app.kubernetes.io/name=catalog > bin/crd.yaml; \
 		mv bin/crd.yaml $$f; \
 	done
 
