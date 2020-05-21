@@ -35,7 +35,7 @@ import (
 	"k8s.io/client-go/util/jsonpath"
 )
 
-func CreateOrPatchAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, meta metav1.ObjectMeta, transform func(*api.AppBinding) *api.AppBinding) (*api.AppBinding, kutil.VerbType, error) {
+func CreateOrPatchAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, meta metav1.ObjectMeta, transform func(*api.AppBinding) *api.AppBinding, opts metav1.PatchOptions) (*api.AppBinding, kutil.VerbType, error) {
 	cur, err := c.AppBindings(meta.Namespace).Get(ctx, meta.Name, metav1.GetOptions{})
 	if kerr.IsNotFound(err) {
 		glog.V(3).Infof("Creating AppBinding %s/%s.", meta.Namespace, meta.Name)
@@ -45,19 +45,22 @@ func CreateOrPatchAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interfa
 				APIVersion: api.SchemeGroupVersion.String(),
 			},
 			ObjectMeta: meta,
-		}), metav1.CreateOptions{})
+		}), metav1.CreateOptions{
+			DryRun:       opts.DryRun,
+			FieldManager: opts.FieldManager,
+		})
 		return out, kutil.VerbCreated, err
 	} else if err != nil {
 		return nil, kutil.VerbUnchanged, err
 	}
-	return PatchAppBinding(ctx, c, cur, transform)
+	return PatchAppBinding(ctx, c, cur, transform, opts)
 }
 
-func PatchAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, cur *api.AppBinding, transform func(*api.AppBinding) *api.AppBinding) (*api.AppBinding, kutil.VerbType, error) {
-	return PatchAppBindingObject(ctx, c, cur, transform(cur.DeepCopy()))
+func PatchAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, cur *api.AppBinding, transform func(*api.AppBinding) *api.AppBinding, opts metav1.PatchOptions) (*api.AppBinding, kutil.VerbType, error) {
+	return PatchAppBindingObject(ctx, c, cur, transform(cur.DeepCopy()), opts)
 }
 
-func PatchAppBindingObject(ctx context.Context, c cs.AppcatalogV1alpha1Interface, cur, mod *api.AppBinding) (*api.AppBinding, kutil.VerbType, error) {
+func PatchAppBindingObject(ctx context.Context, c cs.AppcatalogV1alpha1Interface, cur, mod *api.AppBinding, opts metav1.PatchOptions) (*api.AppBinding, kutil.VerbType, error) {
 	curJson, err := json.Marshal(cur)
 	if err != nil {
 		return nil, kutil.VerbUnchanged, err
@@ -76,11 +79,11 @@ func PatchAppBindingObject(ctx context.Context, c cs.AppcatalogV1alpha1Interface
 		return cur, kutil.VerbUnchanged, nil
 	}
 	glog.V(3).Infof("Patching AppBinding %s/%s with %s.", cur.Namespace, cur.Name, string(patch))
-	out, err := c.AppBindings(cur.Namespace).Patch(ctx, cur.Name, types.MergePatchType, patch, metav1.PatchOptions{})
+	out, err := c.AppBindings(cur.Namespace).Patch(ctx, cur.Name, types.MergePatchType, patch, opts)
 	return out, kutil.VerbPatched, err
 }
 
-func TryUpdateAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, meta metav1.ObjectMeta, transform func(*api.AppBinding) *api.AppBinding) (result *api.AppBinding, err error) {
+func TryUpdateAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, meta metav1.ObjectMeta, transform func(*api.AppBinding) *api.AppBinding, opts metav1.UpdateOptions) (result *api.AppBinding, err error) {
 	attempt := 0
 	err = wait.PollImmediate(kutil.RetryInterval, kutil.RetryTimeout, func() (bool, error) {
 		attempt++
@@ -89,7 +92,7 @@ func TryUpdateAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, 
 			return false, e2
 		} else if e2 == nil {
 
-			result, e2 = c.AppBindings(cur.Namespace).Update(ctx, transform(cur.DeepCopy()), metav1.UpdateOptions{})
+			result, e2 = c.AppBindings(cur.Namespace).Update(ctx, transform(cur.DeepCopy()), opts)
 			return e2 == nil, nil
 		}
 		glog.Errorf("Attempt %d failed to update AppBinding %s/%s due to %v.", attempt, cur.Namespace, cur.Name, e2)
