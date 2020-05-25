@@ -485,7 +485,7 @@ k8s.io/apiserver/plugin/pkg/audit/truncate
 k8s.io/apiserver/plugin/pkg/audit/webhook
 k8s.io/apiserver/plugin/pkg/authenticator/token/webhook
 k8s.io/apiserver/plugin/pkg/authorizer/webhook
-# k8s.io/client-go v0.18.3 => k8s.io/client-go v0.18.3
+# k8s.io/client-go v12.0.0+incompatible => k8s.io/client-go v0.18.3
 k8s.io/client-go/discovery
 k8s.io/client-go/discovery/fake
 k8s.io/client-go/informers
@@ -675,7 +675,7 @@ k8s.io/utils/net
 k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.0.0-20200524205059-e986bc44c91b
+# kmodules.xyz/client-go v0.0.0-20200525012433-99c6914a1eca
 kmodules.xyz/client-go
 kmodules.xyz/client-go/apiextensions
 kmodules.xyz/client-go/apiextensions/v1

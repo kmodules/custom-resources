@@ -36,9 +36,9 @@ require (
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	k8s.io/api v0.18.3
 	k8s.io/apimachinery v0.18.3
-	k8s.io/client-go v0.18.3
+	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/kube-openapi v0.0.0-20200410145947-61e04a5be9a6
-	kmodules.xyz/client-go v0.0.0-20200524205059-e986bc44c91b
+	kmodules.xyz/client-go v0.0.0-20200525012433-99c6914a1eca
 	kmodules.xyz/crd-schema-fuzz v0.0.0-20200521005638-2433a187de95
 	sigs.k8s.io/yaml v1.2.0
 )
