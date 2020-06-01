@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"net/url"
@@ -25,6 +27,10 @@ import (
 
 	"kmodules.xyz/client-go/apiextensions"
 	"kmodules.xyz/custom-resources/api/crds"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/util/jsonpath"
 )
 
 func (_ AppBinding) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
@@ -116,4 +122,57 @@ func (a AppBinding) AppGroupResource() (string, string) {
 		return "", t
 	}
 	return t[:idx], t[idx+1:]
+}
+
+// xref: https://github.com/kubernetes-sigs/service-catalog/blob/a204c0d26c60b42121aa608c39a179680e499d2a/pkg/controller/controller_binding.go#L605
+func (a AppBinding) TransformSecret(k8sClient kubernetes.Interface, credentials map[string]interface{}) error {
+	for _, t := range a.Spec.SecretTransforms {
+		switch {
+		case t.AddKey != nil:
+			var value interface{}
+			if t.AddKey.JSONPathExpression != nil {
+				result, err := evaluateJSONPath(*t.AddKey.JSONPathExpression, credentials)
+				if err != nil {
+					return err
+				}
+				value = result
+			} else if t.AddKey.StringValue != nil {
+				value = *t.AddKey.StringValue
+			} else {
+				value = t.AddKey.Value
+			}
+			credentials[t.AddKey.Key] = value
+		case t.RenameKey != nil:
+			value, ok := credentials[t.RenameKey.From]
+			if ok {
+				credentials[t.RenameKey.To] = value
+				delete(credentials, t.RenameKey.From)
+			}
+		case t.AddKeysFrom != nil:
+			secret, err := k8sClient.CoreV1().
+				Secrets(t.AddKeysFrom.SecretRef.Namespace).
+				Get(context.Background(), t.AddKeysFrom.SecretRef.Name, metav1.GetOptions{})
+			if err != nil {
+				return err
+			}
+			for k, v := range secret.Data {
+				credentials[k] = v
+			}
+		case t.RemoveKey != nil:
+			delete(credentials, t.RemoveKey.Key)
+		}
+	}
+	return nil
+}
+
+func evaluateJSONPath(jsonPath string, credentials map[string]interface{}) (string, error) {
+	j := jsonpath.New("expression")
+	buf := new(bytes.Buffer)
+	if err := j.Parse(jsonPath); err != nil {
+		return "", err
+	}
+	if err := j.Execute(buf, credentials); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }
