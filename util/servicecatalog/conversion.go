@@ -21,7 +21,7 @@ import (
 
 	appcat "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
 
-	svcat "github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1beta1"
+	svcat "github.com/kubernetes-sigs/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"k8s.io/apimachinery/pkg/conversion"
 )
 
