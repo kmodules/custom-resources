@@ -105,7 +105,7 @@ func TryUpdateAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, 
 	return
 }
 
-// ref: https://github.com/kubernetes-incubator/service-catalog/blob/37b874716ad709a175e426f5f5638322a600849f/pkg/controller/controller_binding.go#L588
+// ref: https://github.com/kubernetes-sigs/service-catalog/blob/37b874716ad709a175e426f5f5638322a600849f/pkg/controller/controller_binding.go#L588
 func TransformCredentials(kc kubernetes.Interface, transforms []api.SecretTransform, credentials map[string]interface{}) error {
 	for _, t := range transforms {
 		switch {
