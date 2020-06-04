@@ -45,7 +45,7 @@ func generateSwaggerJson() {
 		Scheme: Scheme,
 		Codecs: Codecs,
 		Info: spec.InfoProps{
-			Title:   "Kmodules",
+			Title:   "AppsCode Custom Resources",
 			Version: "v0",
 			Contact: &spec.ContactInfo{
 				Name:  "AppsCode Inc.",
@@ -69,7 +69,7 @@ func generateSwaggerJson() {
 		glog.Fatal(err)
 	}
 
-	filename := gort.GOPath() + "/src/kmodules.xyz/custom-resources/api/openapi-spec/swagger.json"
+	filename := gort.GOPath() + "/src/kmodules.xyz/custom-resources/openapi/swagger.json"
 	err = os.MkdirAll(filepath.Dir(filename), 0755)
 	if err != nil {
 		glog.Fatal(err)

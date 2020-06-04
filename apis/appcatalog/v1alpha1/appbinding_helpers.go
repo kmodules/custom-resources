@@ -25,7 +25,7 @@ import (
 	"strings"
 
 	"kmodules.xyz/client-go/apiextensions"
-	"kmodules.xyz/custom-resources/api/crds"
+	"kmodules.xyz/custom-resources/crds"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"

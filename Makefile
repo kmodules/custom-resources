@@ -49,7 +49,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_PKGS := api apis client util
+SRC_PKGS := apis client crds util
 SRC_DIRS := $(SRC_PKGS) hack/gencrd # directories which hold app source (not vendored)
 
 DOCKER_PLATFORMS := linux/amd64 linux/arm linux/arm64
@@ -126,7 +126,7 @@ clientset:
 # Generate openapi schema
 .PHONY: openapi
 openapi: $(addprefix openapi-, $(subst :,_, $(API_GROUPS)))
-	@echo "Generating api/openapi-spec/swagger.json"
+	@echo "Generating openapi/swagger.json"
 	@docker run --rm	                                 \
 		-u $$(id -u):$$(id -g)                           \
 		-v /tmp:/.cache                                  \
@@ -141,7 +141,7 @@ openapi: $(addprefix openapi-, $(subst :,_, $(API_GROUPS)))
 
 openapi-%:
 	@echo "Generating openapi schema for $(subst _,/,$*)"
-	@mkdir -p api/api-rules
+	@mkdir -p .config/api-rules
 	@docker run --rm	                                 \
 		-u $$(id -u):$$(id -g)                           \
 		-v /tmp:/.cache                                  \
@@ -155,7 +155,7 @@ openapi-%:
 			--go-header-file "./hack/license/go.txt" \
 			--input-dirs "$(GO_PKG)/$(REPO)/apis/$(subst _,/,$*),k8s.io/apimachinery/pkg/apis/meta/v1,k8s.io/apimachinery/pkg/api/resource,k8s.io/apimachinery/pkg/runtime,k8s.io/apimachinery/pkg/util/intstr,k8s.io/apimachinery/pkg/version,k8s.io/api/core/v1,k8s.io/api/apps/v1" \
 			--output-package "$(GO_PKG)/$(REPO)/apis/$(subst _,/,$*)" \
-			--report-filename api/api-rules/violation_exceptions.list
+			--report-filename .config/api-rules/violation_exceptions.list
 
 # Generate CRD manifests
 .PHONY: gen-crds
@@ -172,13 +172,13 @@ gen-crds:
 		controller-gen                      \
 			$(CRD_OPTIONS)                  \
 			paths="./apis/..."              \
-			output:crd:artifacts:config=api/crds
+			output:crd:artifacts:config=crds
 
 crds_to_patch := appcatalog.appscode.com_appbindings.yaml
 
 .PHONY: label-crds
 label-crds: $(BUILD_DIRS)
-	@for f in api/crds/*.yaml; do \
+	@for f in crds/*.yaml; do \
 		echo "applying app.kubernetes.io/name=catalog label to $$f"; \
 		kubectl label --overwrite -f $$f --local=true -o yaml app.kubernetes.io/name=catalog > bin/crd.yaml; \
 		mv bin/crd.yaml $$f; \
@@ -208,7 +208,7 @@ gen-bindata:
 	    --rm                                                    \
 	    -u $$(id -u):$$(id -g)                                  \
 	    -v $$(pwd):/src                                         \
-	    -w /src/api/crds                                        \
+	    -w /src/crds                                        \
 		-v /tmp:/.cache                                         \
 	    --env HTTP_PROXY=$(HTTP_PROXY)                          \
 	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
