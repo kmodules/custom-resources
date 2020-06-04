@@ -67,8 +67,8 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 	cases := []struct {
 		name                   string
 		transforms             []v1alpha1.SecretTransform
-		credentials            map[string]interface{}
-		transformedCredentials map[string]interface{}
+		credentials            map[string][]byte
+		transformedCredentials map[string][]byte
 		otherSecret            *core.Secret
 	}{
 		{
@@ -81,11 +81,11 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					},
 				},
 			},
-			credentials: map[string]interface{}{
-				"foo": "123",
+			credentials: map[string][]byte{
+				"foo": []byte("123"),
 			},
-			transformedCredentials: map[string]interface{}{
-				"bar": "123",
+			transformedCredentials: map[string][]byte{
+				"bar": []byte("123"),
 			},
 		},
 		{
@@ -98,11 +98,11 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					},
 				},
 			},
-			credentials: map[string]interface{}{
-				"foo": "123",
+			credentials: map[string][]byte{
+				"foo": []byte("123"),
 			},
-			transformedCredentials: map[string]interface{}{
-				"foo": "123",
+			transformedCredentials: map[string][]byte{
+				"foo": []byte("123"),
 				"bar": []byte("456"),
 			},
 		},
@@ -116,52 +116,12 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					},
 				},
 			},
-			credentials: map[string]interface{}{
-				"foo": "123",
+			credentials: map[string][]byte{
+				"foo": []byte("123"),
 			},
-			transformedCredentials: map[string]interface{}{
-				"foo": "123",
-				"bar": "456",
-			},
-		},
-		{
-			name: "AddKeyTransform with JSONPathExpression",
-			transforms: []v1alpha1.SecretTransform{
-				{
-					AddKey: &v1alpha1.AddKeyTransform{
-						Key:                "bar",
-						JSONPathExpression: types.StringP("{.foo}"),
-					},
-				},
-			},
-			credentials: map[string]interface{}{
-				"foo": "123",
-			},
-			transformedCredentials: map[string]interface{}{
-				"foo": "123",
-				"bar": "123",
-			},
-		},
-		{
-			name: "AddKeyTransform with JSONPathExpression on non-flat credentials",
-			transforms: []v1alpha1.SecretTransform{
-				{
-					AddKey: &v1alpha1.AddKeyTransform{
-						Key:                "child-of-foo",
-						JSONPathExpression: types.StringP("{.foo.child}"),
-					},
-				},
-			},
-			credentials: map[string]interface{}{
-				"foo": map[string]interface{}{
-					"child": "123",
-				},
-			},
-			transformedCredentials: map[string]interface{}{
-				"foo": map[string]interface{}{
-					"child": "123",
-				},
-				"child-of-foo": "123",
+			transformedCredentials: map[string][]byte{
+				"foo": []byte("123"),
+				"bar": []byte("456"),
 			},
 		},
 		{
@@ -175,12 +135,12 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					},
 				},
 			},
-			credentials: map[string]interface{}{
-				"foo": "123",
+			credentials: map[string][]byte{
+				"foo": []byte("123"),
 			},
-			transformedCredentials: map[string]interface{}{
-				"foo": "123",
-				"bar": "789",
+			transformedCredentials: map[string][]byte{
+				"foo": []byte("123"),
+				"bar": []byte("789"),
 			},
 		},
 		{
@@ -195,7 +155,7 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					},
 				},
 			},
-			credentials: map[string]interface{}{
+			credentials: map[string][]byte{
 				"foo": []byte("123"),
 			},
 			otherSecret: &core.Secret{
@@ -207,7 +167,7 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					"bar": []byte("456"),
 				},
 			},
-			transformedCredentials: map[string]interface{}{
+			transformedCredentials: map[string][]byte{
 				"foo": []byte("123"),
 				"bar": []byte("456"),
 			},
@@ -221,12 +181,12 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					},
 				},
 			},
-			credentials: map[string]interface{}{
-				"foo": "123",
-				"bar": "456",
+			credentials: map[string][]byte{
+				"foo": []byte("123"),
+				"bar": []byte("456"),
 			},
-			transformedCredentials: map[string]interface{}{
-				"foo": "123",
+			transformedCredentials: map[string][]byte{
+				"foo": []byte("123"),
 			},
 		},
 	}
