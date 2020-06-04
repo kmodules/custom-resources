@@ -1720,14 +1720,9 @@
       "required": [
         "key",
         "value",
-        "stringValue",
-        "jsonPathExpression"
+        "stringValue"
       ],
       "properties": {
-        "jsonPathExpression": {
-          "description": "The JSONPath expression, the result of which will be added to the Secret under the specified key. For example, given the following credentials: { \"foo\": { \"bar\": \"foobar\" } } and the jsonPathExpression \"{.foo.bar}\", the value \"foobar\" will be stored in the credentials Secret under the specified key.",
-          "type": "string"
-        },
         "key": {
           "description": "The name of the key to add",
           "type": "string"
