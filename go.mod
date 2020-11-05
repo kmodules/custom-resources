@@ -3,19 +3,19 @@ module kmodules.xyz/custom-resources
 go 1.12
 
 require (
-	github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
 	github.com/go-openapi/spec v0.19.3
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/google/gofuzz v1.1.0
 	github.com/json-iterator/go v1.1.10
 	github.com/kubernetes-sigs/service-catalog v0.3.0
-	github.com/mattn/go-isatty v0.0.9 // indirect
+	gomodules.xyz/pointer v0.0.0-20201105040656-991dd254b680
+	gomodules.xyz/runtime v0.0.0-20201104200926-d838b09dda8b
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
 	k8s.io/client-go v0.18.9
 	k8s.io/kube-openapi v0.0.0-20200410145947-61e04a5be9a6
-	kmodules.xyz/client-go v0.0.0-20200922200830-63d86b6e5b63
+	kmodules.xyz/client-go v0.0.0-20201105071625-0b277310b9b8
 	kmodules.xyz/crd-schema-fuzz v0.0.0-20200922204806-c1426cd7fcf4
 	sigs.k8s.io/yaml v1.2.0
 )

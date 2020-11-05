@@ -25,9 +25,9 @@ import (
 	cataloginstall "kmodules.xyz/custom-resources/apis/appcatalog/install"
 	catalog "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
 
-	gort "github.com/appscode/go/runtime"
 	"github.com/go-openapi/spec"
 	"github.com/golang/glog"
+	gort "gomodules.xyz/runtime"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/kube-openapi/pkg/common"
