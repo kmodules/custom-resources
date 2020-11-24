@@ -1718,9 +1718,7 @@
       "description": "AddKeyTransform specifies that Service Catalog should add an additional entry to the Secret associated with the ServiceBinding. For example, given the following AddKeyTransform:\n    {\"key\": \"CONNECTION_POOL_SIZE\", \"stringValue\": \"10\"}\nthe following entry will appear in the Secret:\n    \"CONNECTION_POOL_SIZE\": \"10\"\nNote that this transform should only be used to add non-sensitive (non-secret) values. To add sensitive information, the AddKeysFromTransform should be used instead.",
       "type": "object",
       "required": [
-        "key",
-        "value",
-        "stringValue"
+        "key"
       ],
       "properties": {
         "key": {

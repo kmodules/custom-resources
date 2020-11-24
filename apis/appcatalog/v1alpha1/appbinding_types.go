@@ -259,9 +259,9 @@ type AddKeyTransform struct {
 	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
 	// The binary value (possibly non-string) to add to the Secret under the specified key. If both
 	// value and stringValue are specified, then value is ignored and stringValue is stored.
-	Value []byte `json:"value" protobuf:"bytes,2,opt,name=value"`
+	Value []byte `json:"value,omitempty" protobuf:"bytes,2,opt,name=value"`
 	// The string (non-binary) value to add to the Secret under the specified key.
-	StringValue *string `json:"stringValue" protobuf:"bytes,3,opt,name=stringValue"`
+	StringValue *string `json:"stringValue,omitempty" protobuf:"bytes,3,opt,name=stringValue"`
 }
 
 // AddKeysFromTransform specifies that Service Catalog should merge
