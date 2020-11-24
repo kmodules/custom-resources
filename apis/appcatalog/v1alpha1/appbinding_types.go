@@ -259,8 +259,10 @@ type AddKeyTransform struct {
 	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
 	// The binary value (possibly non-string) to add to the Secret under the specified key. If both
 	// value and stringValue are specified, then value is ignored and stringValue is stored.
+	// +optional
 	Value []byte `json:"value,omitempty" protobuf:"bytes,2,opt,name=value"`
 	// The string (non-binary) value to add to the Secret under the specified key.
+	// +optional
 	StringValue *string `json:"stringValue,omitempty" protobuf:"bytes,3,opt,name=stringValue"`
 }
 
