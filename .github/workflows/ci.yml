@@ -3,18 +3,16 @@ name: CI
 on:
   pull_request:
     branches:
-      - '*'
+      - "*"
   push:
     branches:
       - master
 
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
       - name: Set up Go 1.15
         uses: actions/setup-go@v1
         with:
