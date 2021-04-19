@@ -1,0 +1,247 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: metrics
+  name: metricsconfigurations.metrics.appscode.com
+spec:
+  group: metrics.appscode.com
+  names:
+    categories:
+    - metrics
+    - appscode
+    - all
+    kind: MetricsConfiguration
+    listKind: MetricsConfigurationList
+    plural: metricsconfigurations
+    singular: metricsconfiguration
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.targetRef.group
+      name: Group
+      type: string
+    - jsonPath: .spec.targetRef.resource
+      name: Resource
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MetricsConfigurationSpec is the spec of MetricsConfiguration
+            properties:
+              metrics:
+                description: List of Metrics configuration for the resource defined
+                  in TargetRef
+                items:
+                  description: Metrics contains the configuration of a metric in prometheus
+                    style
+                  properties:
+                    field:
+                      description: Field defines the metric value path of the manifest
+                        file and the type of that value
+                      properties:
+                        path:
+                          description: 'Path defines the manifest file path, example:
+                            spec.replicas'
+                          type: string
+                        type:
+                          description: Type defines the type of the value in the given
+                            Path
+                          type: string
+                      required:
+                      - path
+                      - type
+                      type: object
+                    help:
+                      description: 'Help is used to describe the metrics. Example:
+                        "Number of desired pods for a deployment."'
+                      type: string
+                    labels:
+                      description: Labels defines the metric labels as a key-value
+                        pair
+                      items:
+                        description: Label contains the information of a metric label
+                        properties:
+                          key:
+                            description: Key defines the label key
+                            type: string
+                          value:
+                            description: Value defines the hard coded label value
+                            type: string
+                          valuePath:
+                            description: 'ValuePath defines the label value path.
+                              example: spec.replicas'
+                            type: string
+                        required:
+                        - key
+                        type: object
+                      type: array
+                    metricValue:
+                      description: MetricValue defines the configuration for the metric
+                        value
+                      properties:
+                        value:
+                          description: Value contains the metric value. This is the
+                            default value of a metric. Most of the time it is equal
+                            to one.
+                          type: string
+                        valueFromExpression:
+                          description: "ValueFromExpression contains an expression
+                            for the metric value expression can be a function as well.
+                            Used expression evaluation functions are: \n toInt() returns
+                            1 if the expression is true otherwise 0, example: toInt(phase
+                            == 'Running') \n evaluatePercentage(a, b) returns the
+                            value of a * b% example: evaluatePercentage(replicas,
+                            maxUnavailable) \n calculateCPU() returns the cpu in unit
+                            core example: calculateCPU(cpu), for cpu value 150m, it
+                            will return 0.15 \n calculateMemory() returns the memory
+                            size in byte example: calculateMemory(memory), for memory
+                            value 1 ki, it will return 1024 \n toUnix() returns the
+                            DateTime string into unix format. example: toUnix(dateTime)
+                            will return the corresponding unix value for the given
+                            dateTime \n in above examples phase, replicas, maxUnavailable,
+                            cpu, memory, dateTime are Parameter's key those values
+                            will come from corresponding Parameter's value"
+                          type: string
+                        valueFromPath:
+                          description: 'ValueFromPath contains the field path of the
+                            manifest file of a object. example: spec.replicas'
+                          type: string
+                      type: object
+                    name:
+                      description: 'Name defines the metrics name. Example: kube_deployment_spec_replicas'
+                      type: string
+                    params:
+                      description: Params is list of parameters configuration used
+                        in expression evaluation
+                      items:
+                        description: Parameter contains the information of a parameter
+                          used in expression evaluation
+                        properties:
+                          key:
+                            description: Key defines the parameter's key
+                            type: string
+                          value:
+                            description: Value defines the parameter's value
+                            type: string
+                          valuePath:
+                            description: 'ValuePath defines the manifest field path
+                              for the parameter''s value. example: spec.replicas'
+                            type: string
+                        required:
+                        - key
+                        type: object
+                      type: array
+                    states:
+                      description: States handles metrics with label cardinality
+                      properties:
+                        labelKey:
+                          description: 'LabelKey defines the label key of the label
+                            which label cardinality is greater than one example: labelKey
+                            = phase'
+                          type: string
+                        values:
+                          description: Values contains the list of state values
+                          items:
+                            description: StateValues contains the information of a
+                              state value
+                            properties:
+                              labelValue:
+                                description: 'LabelValue defines the value of the
+                                  label. Example: For labelKey phase label value can
+                                  be "Running"'
+                                type: string
+                              metricValue:
+                                description: MetricValue defines the configuration
+                                  of the metric value for the corresponding LabelValue
+                                properties:
+                                  value:
+                                    description: Value contains the metric value.
+                                      This is the default value of a metric. Most
+                                      of the time it is equal to one.
+                                    type: string
+                                  valueFromExpression:
+                                    description: "ValueFromExpression contains an
+                                      expression for the metric value expression can
+                                      be a function as well. Used expression evaluation
+                                      functions are: \n toInt() returns 1 if the expression
+                                      is true otherwise 0, example: toInt(phase ==
+                                      'Running') \n evaluatePercentage(a, b) returns
+                                      the value of a * b% example: evaluatePercentage(replicas,
+                                      maxUnavailable) \n calculateCPU() returns the
+                                      cpu in unit core example: calculateCPU(cpu),
+                                      for cpu value 150m, it will return 0.15 \n calculateMemory()
+                                      returns the memory size in byte example: calculateMemory(memory),
+                                      for memory value 1 ki, it will return 1024 \n
+                                      toUnix() returns the DateTime string into unix
+                                      format. example: toUnix(dateTime) will return
+                                      the corresponding unix value for the given dateTime
+                                      \n in above examples phase, replicas, maxUnavailable,
+                                      cpu, memory, dateTime are Parameter's key those
+                                      values will come from corresponding Parameter's
+                                      value"
+                                    type: string
+                                  valueFromPath:
+                                    description: 'ValueFromPath contains the field
+                                      path of the manifest file of a object. example:
+                                      spec.replicas'
+                                    type: string
+                                type: object
+                            required:
+                            - labelValue
+                            - metricValue
+                            type: object
+                          type: array
+                      required:
+                      - labelKey
+                      - values
+                      type: object
+                    type:
+                      description: 'Type defines the metrics type. Example: gauge'
+                      type: string
+                  required:
+                  - help
+                  - name
+                  - type
+                  type: object
+                type: array
+              targetRef:
+                description: TargetRef defines the object for which metrics will be
+                  collected
+                properties:
+                  group:
+                    description: Group defines the group of the object
+                    type: string
+                  resource:
+                    description: Resource defines the resource of the object
+                    type: string
+                required:
+                - group
+                - resource
+                type: object
+            required:
+            - metrics
+            - targetRef
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources: {}

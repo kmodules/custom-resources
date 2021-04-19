@@ -24,6 +24,8 @@ import (
 	"kmodules.xyz/client-go/openapi"
 	cataloginstall "kmodules.xyz/custom-resources/apis/appcatalog/install"
 	catalog "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
+	metricsinstall "kmodules.xyz/custom-resources/apis/metrics/install"
+	metrics "kmodules.xyz/custom-resources/apis/metrics/v1alpha1"
 
 	"github.com/go-openapi/spec"
 	"github.com/golang/glog"
@@ -40,6 +42,7 @@ func generateSwaggerJson() {
 	)
 
 	cataloginstall.Install(Scheme)
+	metricsinstall.Install(Scheme)
 
 	apispec, err := openapi.RenderOpenAPISpec(openapi.Config{
 		Scheme: Scheme,
@@ -59,10 +62,12 @@ func generateSwaggerJson() {
 		},
 		OpenAPIDefinitions: []common.GetOpenAPIDefinitions{
 			catalog.GetOpenAPIDefinitions,
+			metrics.GetOpenAPIDefinitions,
 		},
 		//nolint:govet
 		Resources: []openapi.TypeInfo{
 			{catalog.SchemeGroupVersion, catalog.ResourceApps, catalog.ResourceKindApp, true},
+			{metrics.SchemeGroupVersion, metrics.ResourcePluralMetricsConfiguration, metrics.ResourceKindMetricsConfiguration, false},
 		},
 	})
 	if err != nil {
