@@ -26,7 +26,8 @@ const (
 	ResourcePluralMetricsConfiguration   = "metricsconfigurations"
 )
 
-// MetricsConfiguration defines a generic prometheus metrics configuration
+// MetricsConfiguration defines a generic metrics configuration
+// in prometheus style for a specific resource object.
 
 // +genclient
 // +genclient:nonNamespaced
@@ -45,33 +46,39 @@ type MetricsConfiguration struct {
 	Spec              MetricsConfigurationSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 }
 
-// MetricsConfigurationSpec is the spec of MetricsConfiguration
+// MetricsConfigurationSpec is the spec of MetricsConfiguration object.
 type MetricsConfigurationSpec struct {
 	// TargetRef defines the object for which metrics will be collected
 	TargetRef TargetRef `json:"targetRef" protobuf:"bytes,1,opt,name=targetRef"`
 
-	// List of Metrics configuration for the resource defined in TargetRef
+	// List of Metrics configuration for the resource object defined in TargetRef
 	Metrics []Metrics `json:"metrics" protobuf:"bytes,2,rep,name=metrics"`
 }
 
-// TargetRef defines the Object's group, version, resource
+// TargetRef contains the Object's group and resource to specify the target resource
 type TargetRef struct {
-	// Group defines the group of the object
+	// Group defines the group of the object.
+	// Example: For Deployment, Group will be 'apps'
 	Group string `json:"group" protobuf:"bytes,1,opt,name=group"`
 
-	// Resource defines the resource of the object
+	// Resource defines the resource of the object.
+	// Example: For Deployment, Resource will be 'deployments'
 	Resource string `json:"resource" protobuf:"bytes,2,opt,name=resource"`
 }
 
-// Metrics contains the configuration of a metric in prometheus style
+// Metrics contains the configuration of a metric in prometheus style.
 type Metrics struct {
-	// Name defines the metrics name. Example: kube_deployment_spec_replicas
+	// Name defines the metrics name. Name should be in snake case.
+	// Example: kube_deployment_spec_replicas
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
-	// Help is used to describe the metrics. Example: "Number of desired pods for a deployment."
+	// Help is used to describe the metrics.
+	// Example: For kube_deployment_spec_replicas, help string can be "Number of desired pods for a deployment."
 	Help string `json:"help" protobuf:"bytes,2,opt,name=help"`
 
-	// Type defines the metrics type. Example: gauge
+	// Type defines the metrics type.
+	// For kubernetes based object, types can only be gauge
+	// +kubebuilder:validation:Enum=gauge;
 	Type string `json:"type" protobuf:"bytes,3,opt,name=type"`
 
 	// Field defines the metric value path of the manifest file and the type of that value
@@ -86,11 +93,19 @@ type Metrics struct {
 	// +optional
 	Params []Parameter `json:"params,omitempty" protobuf:"bytes,6,rep,name=params"`
 
-	// States handles metrics with label cardinality
+	// States handle metrics with label cardinality.
+	// States specify the possible states for a label
+	// and their corresponding MetricValue configuration.
+	//
+	// Metrics must contain either States or MetricValue.
+	// If both are specified, MetricValue will be ignored.
 	// +optional
 	States State `json:"states,omitempty" protobuf:"bytes,7,opt,name=states"`
 
-	// MetricValue defines the configuration for the metric value
+	// MetricValue defines the configuration to obtain metric value.
+	//
+	// Metrics must contain either States or MetricValue.
+	// If both are specified, MetricValue will be ignored.
 	// +optional
 	MetricValue MetricValue `json:"metricValue,omitempty" protobuf:"bytes,8,opt,name=metricValue"`
 }
@@ -98,90 +113,180 @@ type Metrics struct {
 type FieldType string
 
 const (
-	FieldTypeInteger    FieldType = "Integer"
-	FieldTypePercentage FieldType = "Percentage"
-	FieldTypeDateTime   FieldType = "DateTime"
-	FieldTypeArray      FieldType = "Array"
+	FieldTypeInteger  FieldType = "Integer"
+	FieldTypeDateTime FieldType = "DateTime"
+	FieldTypeArray    FieldType = "Array"
+	FieldTypeString   FieldType = "String"
 )
 
-// Field contains the information of a manifest field for which metric is collected
+// Field contains the information of the field for which metric is collected.
+// Example: To collect available replica count for a Deployment, Field's Path
+// will be .statue.availableReplicas and the Type will be Integer.
+//
+// When some labels are collected with metric value 1 and
+// the values are not from an array then Field can be skipped
+// or will be ignored if specified. Otherwise Field must be specified.
 type Field struct {
-	// Path defines the manifest file path, example: spec.replicas
+	// Path defines the json path of the object.
+	// Example: For deployment spec replica count, the path will be .spec.replicas
 	Path string `json:"path" protobuf:"bytes,1,opt,name=path"`
 
 	// Type defines the type of the value in the given Path
+	// Type can be "Integer" for integer value like .spec.replicas,
+	// "DateTime" for time stamp value like .metadata.creationTimestamp
+	// "Array" for array field like .spec.containers
+	// "String" for string field like .statue.phase (for pod status)
+	// +kubebuilder:validation:Enum=Integer;DateTime;Array;String
 	Type FieldType `json:"type" protobuf:"bytes,2,opt,name=type"`
 }
 
-// Label contains the information of a metric label
+// Label contains the information of a metric label.
+// Given labels are always added in the metrics along with resource name and namespace.
+// Resource's name and namespace are always added in the labels by default.
+// No configuration is needed for name and namespace labels.
+//
+// Example: kube_pod_info{pod="<pod_name>", namespace="<pod_namespace>", host_ip="172.18.0.2", pod_ip="10.244.0.14", node="kind-control-plane"}  1
+// In the example pod, namespace, host_ip, pod_ip, node are labels.
+// pod(resource name) and namespace are default labels. No configurations is needed for those.
+//
+// To generate others labels, config should be given in the following way
+//
+// labels:
+//   - key: host_ip
+//     valuePath: .status.hostIP
+//   - key: pod_ip
+//     valuePath: .status.podIP
+//   - key: node
+//     valuePath: .spec.nodeName
+//
+// Either Value or ValuePath must be specified for a Label.
+// If both is specified, ValuePath is ignored.
+// Note that if a valuePath doesn't exist for a label key, the label will be ignored.
 type Label struct {
 	// Key defines the label key
 	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
 
-	// Value defines the hard coded label value
+	// Value defines the hard coded label value.
+	// Example:
+	// labels:
+	//   - key: unit
+	//     value: byte
+	//   - key: environment
+	//     value: production
+	//
 	// +optional
 	Value string `json:"value,omitempty" protobuf:"bytes,2,opt,name=value"`
 
-	// ValuePath defines the label value path. example: spec.replicas
+	// ValuePath defines the label value path.
+	// Example: To add deployment's resource version as labels,
+	// labels:
+	//   - key: version
+	//     valuePath: .metadata.resourceVersion
+	//
 	// +optional
 	ValuePath string `json:"valuePath" protobuf:"bytes,3,opt,name=valuePath"`
 }
 
 // Parameter contains the information of a parameter used in expression evaluation
+// Parameter should contain an user defined key and corresponding Value or ValuePath.
+// Either Value or ValuePath must be specified.
+// If both are specified, ValuePath is ignored.
 type Parameter struct {
 	// Key defines the parameter's key
 	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
 
-	// Value defines the parameter's value
+	// Value defines user defined parameter's value.
 	// +optional
 	Value string `json:"value,omitempty" protobuf:"bytes,2,opt,name=value"`
 
-	// ValuePath defines the manifest field path for the parameter's value. example: spec.replicas
+	// ValuePath defines the manifest field path for the parameter's value.
+	// Example: To add deployment's spec replica count as parameter,
+	// params:
+	//   - key: replica
+	//     valuePath: .spec.replicas
 	// +optional
 	ValuePath string `json:"valuePath,omitempty" protobuf:"bytes,3,opt,name=valuePath"`
 }
 
 // State contains the configuration for generating all the time series
-// of a metric with label cardinality is greater than 1
+// of a metric with label cardinality is greater than 1.
+//
+// Example: kube_pod_status_phase has a label called "phase" which value can be
+// "Running", "Succeeded", "Failed", "Unknown", "Pending".
+// So the cardinality of label phase is equal to 5. So kube_pod_status_phase will
+// always generate five time series for a single pod.
+//
+// For a pod which .status.phase=Running, the time series are:
+// kube_pod_status_phase{...,phase="Running",...} 1
+// kube_pod_status_phase{...,phase="Succeeded",...} 0
+// kube_pod_status_phase{...,phase="Failed",...} 0
+// kube_pod_status_phase{...,phase="Unknown",...} 0
+// kube_pod_status_phase{...,phase="Pending",...} 0
 type State struct {
-	// LabelKey defines the label key of the label which label cardinality is greater than one
-	// example: labelKey = phase
+	// LabelKey defines an user defined label key of the label
+	// which label cardinality is greater than one.
+	// Example: For metric "kube_pod_status_phase", the LabelKey can be "phase"
 	LabelKey string `json:"labelKey" protobuf:"bytes,1,opt,name=labelKey"`
 
-	// Values contains the list of state values
+	// Values contains the list of state values.
+	// The size of the list is always equal to the cardinality of that label.
+	// Example: "kube_pod_statue_phase" metric has a label "phase"
+	// which cardinality is equal to 5. So Values should have StateValues config for all of them.
 	Values []StateValues `json:"values" protobuf:"bytes,2,rep,name=values"`
 }
 
-// StateValues contains the information of a state value
+// StateValues contains the information of a state value.
+// StateValues is used to define state with all possible
+// label values and corresponding MetricValue.
 type StateValues struct {
 	// LabelValue defines the value of the label.
-	// Example: For labelKey phase label value can be "Running"
+	// Example: For labelKey "phase" (metric: kube_pod_status_phase path: .status.phase )
+	// label value can be "Running", "Succeeded", "Failed", "Unknown" and "Pending"
 	LabelValue string `json:"labelValue" protobuf:"bytes,1,opt,name=labelValue"`
 
 	// MetricValue defines the configuration of the metric value for the corresponding LabelValue
 	MetricValue MetricValue `json:"metricValue" protobuf:"bytes,2,opt,name=metricValue"`
 }
 
-// MetricValue contains the configuration to obtain the value for a metric
+// MetricValue contains the configuration to obtain the value for a metric.
+// Note that MetricValue should contain only one field: Value or ValueFromPath or ValueFromExpression.
+// If multiple fields are assigned then only one field is considered and other fields are ignored.
+// The priority rule is Value > ValueFromPath > ValueFromExpression.
 type MetricValue struct {
-	// Value contains the metric value. This is the default value of a metric.
-	// Most of the time it is equal to one.
+	// Value contains the metric value. It is always equal to 1.
+	// It is defined when some information of the object is
+	// collected as labels but there is no specific metric value.
+	//
+	// Example: For metrics "kube_pod_info", there are some information
+	// like host_ip, pod_ip, node name is collected as labels.
+	// As there must be a metric value, metric value is kept as 1.
+	// The metric will look like `kube_pod_info{host_ip="172.18.0.2", pod_ip="10.244.0.14", node="kind-control-plane" .....}  1`
 	// +optional
 	Value string `json:"value,omitempty" protobuf:"bytes,1,opt,name=value"`
 
 	// ValueFromPath contains the field path of the manifest file of a object.
-	// example: spec.replicas
+	// ValueFromPath is used when the metric value is coming from
+	// any specific json path of the object.
+	//
+	// Example: For metrics "kube_deployment_spec_replicas",
+	// the metricValue is coming from a specific path .spec.replicas
+	// In this case, valueFromPath: .spec.replicas
+	// Some example of json path: .metadata.observedGeneration, .spec.restartPolicy, .status.startTime
+	//
+	// Some example of json path
+	// which is coming from an element of an array: .spec.containers[*].image, .status.containerStatuses[*].restartCount
 	// +optional
 	ValueFromPath string `json:"valueFromPath,omitempty" protobuf:"bytes,2,opt,name=valueFromPath"`
 
 	// ValueFromExpression contains an expression for the metric value
-	// expression can be a function as well.
-	// Used expression evaluation functions are:
+	// expression can be a function as well. Parameters is used in the expression string
+	//
+	// Available expression evaluation functions are:
 	//
 	// toInt() returns 1 if the expression is true otherwise 0,
 	// example: toInt(phase == 'Running')
 	//
-	// evaluatePercentage(a, b) returns the value of a * b%
+	// evaluatePercentage(a, b) returns the value of (a * b%)
 	// example: evaluatePercentage(replicas, maxUnavailable)
 	//
 	// calculateCPU() returns the cpu in unit core

@@ -15770,12 +15770,12 @@ func schema_custom_resources_apis_metrics_v1alpha1_Field(ref common.ReferenceCal
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "Field contains the information of a manifest field for which metric is collected",
+				Description: "Field contains the information of the field for which metric is collected. Example: To collect available replica count for a Deployment, Field's Path will be .statue.availableReplicas and the Type will be Integer.\n\nWhen some labels are collected with metric value 1 and the values are not from an array then Field can be skipped or will be ignored if specified. Otherwise Field must be specified.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"path": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Path defines the manifest file path, example: spec.replicas",
+							Description: "Path defines the json path of the object. Example: For deployment spec replica count, the path will be .spec.replicas",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -15783,7 +15783,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_Field(ref common.ReferenceCal
 					},
 					"type": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Type defines the type of the value in the given Path",
+							Description: "Type defines the type of the value in the given Path Type can be \"Integer\" for integer value like .spec.replicas, \"DateTime\" for time stamp value like .metadata.creationTimestamp \"Array\" for array field like .spec.containers \"String\" for string field like .statue.phase (for pod status)",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -15800,7 +15800,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_Label(ref common.ReferenceCal
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "Label contains the information of a metric label",
+				Description: "Label contains the information of a metric label. Given labels are always added in the metrics along with resource name and namespace. Resource's name and namespace are always added in the labels by default. No configuration is needed for name and namespace labels.\n\nExample: kube_pod_info{pod=\"<pod_name>\", namespace=\"<pod_namespace>\", host_ip=\"172.18.0.2\", pod_ip=\"10.244.0.14\", node=\"kind-control-plane\"}  1 In the example pod, namespace, host_ip, pod_ip, node are labels. pod(resource name) and namespace are default labels. No configurations is needed for those.\n\nTo generate others labels, config should be given in the following way\n\nlabels:\n  - key: host_ip\n    valuePath: .status.hostIP\n  - key: pod_ip\n    valuePath: .status.podIP\n  - key: node\n    valuePath: .spec.nodeName\n\nEither Value or ValuePath must be specified for a Label. If both is specified, ValuePath is ignored. Note that if a valuePath doesn't exist for a label key, the label will be ignored.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"key": {
@@ -15813,14 +15813,14 @@ func schema_custom_resources_apis_metrics_v1alpha1_Label(ref common.ReferenceCal
 					},
 					"value": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Value defines the hard coded label value",
+							Description: "Value defines the hard coded label value. Example: labels:\n  - key: unit\n    value: byte\n  - key: environment\n    value: production",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"valuePath": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ValuePath defines the label value path. example: spec.replicas",
+							Description: "ValuePath defines the label value path. Example: To add deployment's resource version as labels, labels:\n  - key: version\n    valuePath: .metadata.resourceVersion",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -15837,26 +15837,26 @@ func schema_custom_resources_apis_metrics_v1alpha1_MetricValue(ref common.Refere
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "MetricValue contains the configuration to obtain the value for a metric",
+				Description: "MetricValue contains the configuration to obtain the value for a metric. Note that MetricValue should contain only one field: Value or ValueFromPath or ValueFromExpression. If multiple fields are assigned then only one field is considered and other fields are ignored. The priority rule is Value > ValueFromPath > ValueFromExpression.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"value": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Value contains the metric value. This is the default value of a metric. Most of the time it is equal to one.",
+							Description: "Value contains the metric value. It is always equal to 1. It is defined when some information of the object is collected as labels but there is no specific metric value.\n\nExample: For metrics \"kube_pod_info\", there are some information like host_ip, pod_ip, node name is collected as labels. As there must be a metric value, metric value is kept as 1. The metric will look like `kube_pod_info{host_ip=\"172.18.0.2\", pod_ip=\"10.244.0.14\", node=\"kind-control-plane\" .....}  1`",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"valueFromPath": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ValueFromPath contains the field path of the manifest file of a object. example: spec.replicas",
+							Description: "ValueFromPath contains the field path of the manifest file of a object. ValueFromPath is used when the metric value is coming from any specific json path of the object.\n\nExample: For metrics \"kube_deployment_spec_replicas\", the metricValue is coming from a specific path .spec.replicas In this case, valueFromPath: .spec.replicas Some example of json path: .metadata.observedGeneration, .spec.restartPolicy, .status.startTime\n\nSome example of json path which is coming from an element of an array: .spec.containers[*].image, .status.containerStatuses[*].restartCount",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"valueFromExpression": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ValueFromExpression contains an expression for the metric value expression can be a function as well. Used expression evaluation functions are:\n\ntoInt() returns 1 if the expression is true otherwise 0, example: toInt(phase == 'Running')\n\nevaluatePercentage(a, b) returns the value of a * b% example: evaluatePercentage(replicas, maxUnavailable)\n\ncalculateCPU() returns the cpu in unit core example: calculateCPU(cpu), for cpu value 150m, it will return 0.15\n\ncalculateMemory() returns the memory size in byte example: calculateMemory(memory), for memory value 1 ki, it will return 1024\n\ntoUnix() returns the DateTime string into unix format. example: toUnix(dateTime) will return the corresponding unix value for the given dateTime\n\nin above examples phase, replicas, maxUnavailable, cpu, memory, dateTime are Parameter's key those values will come from corresponding Parameter's value",
+							Description: "ValueFromExpression contains an expression for the metric value expression can be a function as well. Parameters is used in the expression string\n\nAvailable expression evaluation functions are:\n\ntoInt() returns 1 if the expression is true otherwise 0, example: toInt(phase == 'Running')\n\nevaluatePercentage(a, b) returns the value of (a * b%) example: evaluatePercentage(replicas, maxUnavailable)\n\ncalculateCPU() returns the cpu in unit core example: calculateCPU(cpu), for cpu value 150m, it will return 0.15\n\ncalculateMemory() returns the memory size in byte example: calculateMemory(memory), for memory value 1 ki, it will return 1024\n\ntoUnix() returns the DateTime string into unix format. example: toUnix(dateTime) will return the corresponding unix value for the given dateTime\n\nin above examples phase, replicas, maxUnavailable, cpu, memory, dateTime are Parameter's key those values will come from corresponding Parameter's value",
 							Type:        []string{"string"},
 							Format:      "",
 						},
@@ -15871,12 +15871,12 @@ func schema_custom_resources_apis_metrics_v1alpha1_Metrics(ref common.ReferenceC
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "Metrics contains the configuration of a metric in prometheus style",
+				Description: "Metrics contains the configuration of a metric in prometheus style.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"name": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Name defines the metrics name. Example: kube_deployment_spec_replicas",
+							Description: "Name defines the metrics name. Name should be in snake case. Example: kube_deployment_spec_replicas",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -15884,7 +15884,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_Metrics(ref common.ReferenceC
 					},
 					"help": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Help is used to describe the metrics. Example: \"Number of desired pods for a deployment.\"",
+							Description: "Help is used to describe the metrics. Example: For kube_deployment_spec_replicas, help string can be \"Number of desired pods for a deployment.\"",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -15892,7 +15892,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_Metrics(ref common.ReferenceC
 					},
 					"type": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Type defines the metrics type. Example: gauge",
+							Description: "Type defines the metrics type. For kubernetes based object, types can only be gauge",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -15935,14 +15935,14 @@ func schema_custom_resources_apis_metrics_v1alpha1_Metrics(ref common.ReferenceC
 					},
 					"states": {
 						SchemaProps: spec.SchemaProps{
-							Description: "States handles metrics with label cardinality",
+							Description: "States handle metrics with label cardinality. States specify the possible states for a label and their corresponding MetricValue configuration.\n\nMetrics must contain either States or MetricValue. If both are specified, MetricValue will be ignored.",
 							Default:     map[string]interface{}{},
 							Ref:         ref("kmodules.xyz/custom-resources/apis/metrics/v1alpha1.State"),
 						},
 					},
 					"metricValue": {
 						SchemaProps: spec.SchemaProps{
-							Description: "MetricValue defines the configuration for the metric value",
+							Description: "MetricValue defines the configuration to obtain metric value.\n\nMetrics must contain either States or MetricValue. If both are specified, MetricValue will be ignored.",
 							Default:     map[string]interface{}{},
 							Ref:         ref("kmodules.xyz/custom-resources/apis/metrics/v1alpha1.MetricValue"),
 						},
@@ -16048,7 +16048,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_MetricsConfigurationSpec(ref 
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "MetricsConfigurationSpec is the spec of MetricsConfiguration",
+				Description: "MetricsConfigurationSpec is the spec of MetricsConfiguration object.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"targetRef": {
@@ -16060,7 +16060,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_MetricsConfigurationSpec(ref 
 					},
 					"metrics": {
 						SchemaProps: spec.SchemaProps{
-							Description: "List of Metrics configuration for the resource defined in TargetRef",
+							Description: "List of Metrics configuration for the resource object defined in TargetRef",
 							Type:        []string{"array"},
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
@@ -16085,7 +16085,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_Parameter(ref common.Referenc
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "Parameter contains the information of a parameter used in expression evaluation",
+				Description: "Parameter contains the information of a parameter used in expression evaluation Parameter should contain an user defined key and corresponding Value or ValuePath. Either Value or ValuePath must be specified. If both are specified, ValuePath is ignored.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"key": {
@@ -16098,14 +16098,14 @@ func schema_custom_resources_apis_metrics_v1alpha1_Parameter(ref common.Referenc
 					},
 					"value": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Value defines the parameter's value",
+							Description: "Value defines user defined parameter's value.",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"valuePath": {
 						SchemaProps: spec.SchemaProps{
-							Description: "ValuePath defines the manifest field path for the parameter's value. example: spec.replicas",
+							Description: "ValuePath defines the manifest field path for the parameter's value. Example: To add deployment's spec replica count as parameter, params:\n  - key: replica\n    valuePath: .spec.replicas",
 							Type:        []string{"string"},
 							Format:      "",
 						},
@@ -16121,12 +16121,12 @@ func schema_custom_resources_apis_metrics_v1alpha1_State(ref common.ReferenceCal
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "State contains the configuration for generating all the time series of a metric with label cardinality is greater than 1",
+				Description: "State contains the configuration for generating all the time series of a metric with label cardinality is greater than 1.\n\nExample: kube_pod_status_phase has a label called \"phase\" which value can be \"Running\", \"Succeeded\", \"Failed\", \"Unknown\", \"Pending\". So the cardinality of label phase is equal to 5. So kube_pod_status_phase will always generate five time series for a single pod.\n\nFor a pod which .status.phase=Running, the time series are: kube_pod_status_phase{...,phase=\"Running\",...} 1 kube_pod_status_phase{...,phase=\"Succeeded\",...} 0 kube_pod_status_phase{...,phase=\"Failed\",...} 0 kube_pod_status_phase{...,phase=\"Unknown\",...} 0 kube_pod_status_phase{...,phase=\"Pending\",...} 0",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"labelKey": {
 						SchemaProps: spec.SchemaProps{
-							Description: "LabelKey defines the label key of the label which label cardinality is greater than one example: labelKey = phase",
+							Description: "LabelKey defines an user defined label key of the label which label cardinality is greater than one. Example: For metric \"kube_pod_status_phase\", the LabelKey can be \"phase\"",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -16134,7 +16134,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_State(ref common.ReferenceCal
 					},
 					"values": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Values contains the list of state values",
+							Description: "Values contains the list of state values. The size of the list is always equal to the cardinality of that label. Example: \"kube_pod_statue_phase\" metric has a label \"phase\" which cardinality is equal to 5. So Values should have StateValues config for all of them.",
 							Type:        []string{"array"},
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
@@ -16159,12 +16159,12 @@ func schema_custom_resources_apis_metrics_v1alpha1_StateValues(ref common.Refere
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "StateValues contains the information of a state value",
+				Description: "StateValues contains the information of a state value. StateValues is used to define state with all possible label values and corresponding MetricValue.",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"labelValue": {
 						SchemaProps: spec.SchemaProps{
-							Description: "LabelValue defines the value of the label. Example: For labelKey phase label value can be \"Running\"",
+							Description: "LabelValue defines the value of the label. Example: For labelKey \"phase\" (metric: kube_pod_status_phase path: .status.phase ) label value can be \"Running\", \"Succeeded\", \"Failed\", \"Unknown\" and \"Pending\"",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -16190,12 +16190,12 @@ func schema_custom_resources_apis_metrics_v1alpha1_TargetRef(ref common.Referenc
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "TargetRef defines the Object's group, version, resource",
+				Description: "TargetRef contains the Object's group and resource to specify the target resource",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"group": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Group defines the group of the object",
+							Description: "Group defines the group of the object. Example: For Deployment, Group will be 'apps'",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
@@ -16203,7 +16203,7 @@ func schema_custom_resources_apis_metrics_v1alpha1_TargetRef(ref common.Referenc
 					},
 					"resource": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Resource defines the resource of the object",
+							Description: "Resource defines the resource of the object. Example: For Deployment, Resource will be 'deployments'",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",
