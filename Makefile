@@ -21,7 +21,7 @@ BIN      := custom-resources
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS          ?= "crd:trivialVersions=true,preserveUnknownFields=false,allowDangerousTypes=true,crdVersions={v1beta1,v1}"
 # https://github.com/appscodelabs/gengo-builder
-CODE_GENERATOR_IMAGE ?= appscode/gengo:release-1.20
+CODE_GENERATOR_IMAGE ?= appscode/gengo:release-1.21
 API_GROUPS           ?= appcatalog:v1alpha1 metrics:v1alpha1
 
 # This version-strategy uses git tags to set the version string
