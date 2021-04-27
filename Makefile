@@ -22,7 +22,7 @@ BIN      := custom-resources
 CRD_OPTIONS          ?= "crd:trivialVersions=true,preserveUnknownFields=false,allowDangerousTypes=true,crdVersions={v1beta1,v1}"
 # https://github.com/appscodelabs/gengo-builder
 CODE_GENERATOR_IMAGE ?= appscode/gengo:release-1.20
-API_GROUPS           ?= appcatalog:v1alpha1
+API_GROUPS           ?= appcatalog:v1alpha1 metrics:v1alpha1
 
 # This version-strategy uses git tags to set the version string
 git_branch       := $(shell git rev-parse --abbrev-ref HEAD)
@@ -177,9 +177,14 @@ crds_to_patch := appcatalog.appscode.com_appbindings.yaml
 
 .PHONY: label-crds
 label-crds: $(BUILD_DIRS)
-	@for f in crds/*.yaml; do \
+	@for f in crds/appcatalog.appscode.com_*.yaml; do \
 		echo "applying app.kubernetes.io/name=catalog label to $$f"; \
 		kubectl label --overwrite -f $$f --local=true -o yaml app.kubernetes.io/name=catalog > bin/crd.yaml; \
+		mv bin/crd.yaml $$f; \
+	done
+	@for f in crds/metrics.appscode.com_*.yaml; do \
+		echo "applying app.kubernetes.io/name=metrics label to $$f"; \
+		kubectl label --overwrite -f $$f --local=true -o yaml app.kubernetes.io/name=metrics > bin/crd.yaml; \
 		mv bin/crd.yaml $$f; \
 	done
 
@@ -198,7 +203,7 @@ gen-crd-protos:
 			--proto-import=$(DOCKER_REPO_ROOT)/vendor    \
 			--proto-import=$(DOCKER_REPO_ROOT)/third_party/protobuf \
 			--apimachinery-packages=-k8s.io/apimachinery/pkg/api/resource,-k8s.io/apimachinery/pkg/apis/meta/v1,-k8s.io/apimachinery/pkg/apis/meta/v1beta1,-k8s.io/apimachinery/pkg/runtime,-k8s.io/apimachinery/pkg/runtime/schema,-k8s.io/apimachinery/pkg/util/intstr \
-			--packages=-k8s.io/api/core/v1,kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1
+			--packages=-k8s.io/api/core/v1,kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1,kmodules.xyz/custom-resources/apis/metrics/v1alpha1
 
 .PHONY: gen-bindata
 gen-bindata:
