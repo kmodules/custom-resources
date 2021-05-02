@@ -669,8 +669,9 @@ gomodules.xyz/x v0.0.0-20201105065653-91c568df6331/go.mod h1:Q5P/WKpi2XymJJ4mBhU
 google.golang.org/api v0.20.0/go.mod h1:BwFmGc8tA3vsd7r/7kR8DY7iEEGSU04BFxCo5jP/sfE=
 google.golang.org/appengine v1.2.0/go.mod h1:xpcJRLb0r/rnEns0DIKYYv+WjYCduHsrkT7/EB5XEv4=
 google.golang.org/appengine v1.4.0/go.mod h1:xpcJRLb0r/rnEns0DIKYYv+WjYCduHsrkT7/EB5XEv4=
-google.golang.org/appengine v1.5.0 h1:KxkO13IPW4Lslp2bz+KHP2E3gtFlrIGNThxkZQ3g+4c=
 google.golang.org/appengine v1.5.0/go.mod h1:xpcJRLb0r/rnEns0DIKYYv+WjYCduHsrkT7/EB5XEv4=
+google.golang.org/appengine v1.6.5 h1:tycE03LOZYQNhDpS27tcQdAzLCVMaj7QT2SXxebnpCM=
+google.golang.org/appengine v1.6.5/go.mod h1:8WjMMxjGQR8xUklV/ARdw2HLXBOI7O7uCIDZVag1xfc=
 google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a h1:pOwg4OoaRYScjmR4LlLgdtnyoHYTSAVhhqe5uPdpII8=
 google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/grpc v1.27.1 h1:zvIju4sqAGvwKspUQOhwnpcqSbzi7/H6QomNNjTL4sk=
@@ -743,8 +744,8 @@ k8s.io/kube-openapi v0.0.0-20201113171705-d219536bb9fd h1:sOHNzJIkytDF6qadMNKhhD
 k8s.io/kube-openapi v0.0.0-20201113171705-d219536bb9fd/go.mod h1:WOJ3KddDSol4tAGcJo0Tvi+dK12EcqSLqcWsryKMpfM=
 k8s.io/utils v0.0.0-20201110183641-67b214c5f920 h1:CbnUZsM497iRC5QMVkHwyl8s2tB3g7yaSHkYPkpgelw=
 k8s.io/utils v0.0.0-20201110183641-67b214c5f920/go.mod h1:jPW/WVKK9YHAvNhRxK0md/EJ228hCsBRufyofKtW8HA=
-kmodules.xyz/client-go v0.0.0-20210425191502-3a7296dae084 h1:wlpRRYE/hd2PD1gDFJy6+s3dSw/xllpudQQ7Q1zlEYo=
-kmodules.xyz/client-go v0.0.0-20210425191502-3a7296dae084/go.mod h1:GzfBodwFuZ0M6Dswr95bI4V3BG6DH2sPsRipJqqofCA=
+kmodules.xyz/client-go v0.0.0-20210429233600-944c5ec810d6 h1:/inbkXbT3Ab7G7WB7zY6xXn6ivDO9QeAzSb+BoE4rl4=
+kmodules.xyz/client-go v0.0.0-20210429233600-944c5ec810d6/go.mod h1:VZQrfOxE9CIF1d5nco5LTeZ5or6TJeaUMqRjVW4pYB4=
 kmodules.xyz/crd-schema-fuzz v0.0.0-20210427142518-307383b79acb h1:nwqabM7M1mSGReMO7fiCKnIMOVey3xhn+l2WPmbLtKs=
 kmodules.xyz/crd-schema-fuzz v0.0.0-20210427142518-307383b79acb/go.mod h1:UR/KjeT4CryN82am49WNwsa/WTQe4eCx0Z9dIze1sXI=
 rsc.io/quote/v3 v3.1.0/go.mod h1:yEA65RcK8LyAZtP9Kv3t0HmxON59tX3rD+tICJqUlj0=
