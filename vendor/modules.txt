@@ -883,14 +883,15 @@ k8s.io/kube-openapi/pkg/schemaconv
 k8s.io/kube-openapi/pkg/util
 k8s.io/kube-openapi/pkg/util/proto
 k8s.io/kube-openapi/pkg/validation/spec
-# k8s.io/utils v0.0.0-20201110183641-67b214c5f920 => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
+# k8s.io/utils v0.0.0-20210111153108-fddb29f9d009 => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
+## explicit
 k8s.io/utils/buffer
 k8s.io/utils/integer
 k8s.io/utils/net
 k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.0.0-20210502215034-b73197efff3f
+# kmodules.xyz/client-go v0.0.0-20210503064222-c8c59295a3a5
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/apiextensions
@@ -899,7 +900,7 @@ kmodules.xyz/client-go/apiextensions/v1beta1
 kmodules.xyz/client-go/discovery
 kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/openapi
-# kmodules.xyz/crd-schema-fuzz v0.0.0-20210503010137-7a9466ed654d
+# kmodules.xyz/crd-schema-fuzz v0.0.0-20210503192455-da44af375c4c
 ## explicit
 kmodules.xyz/crd-schema-fuzz
 # sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.0.15
