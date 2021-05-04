@@ -24,12 +24,12 @@ import (
 	api "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
 	cs "kmodules.xyz/custom-resources/client/clientset/versioned/typed/appcatalog/v1alpha1"
 
-	"k8s.io/klog/v2"
 	kerr "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/jsonmergepatch"
 	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/klog/v2"
 )
 
 func CreateOrPatchAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, meta metav1.ObjectMeta, transform func(*api.AppBinding) *api.AppBinding, opts metav1.PatchOptions) (*api.AppBinding, kutil.VerbType, error) {
