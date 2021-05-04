@@ -235,12 +235,13 @@ gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/pointer v0.0.0-20201105071923-daf60fa55209
 ## explicit
 gomodules.xyz/pointer
-# gomodules.xyz/runtime v0.0.0-20201104200926-d838b09dda8b
+# gomodules.xyz/runtime v0.2.0
 ## explicit
 gomodules.xyz/runtime
 # gomodules.xyz/version v0.1.0
 gomodules.xyz/version
 # google.golang.org/appengine v1.6.5
+## explicit
 google.golang.org/appengine/internal
 google.golang.org/appengine/internal/base
 google.golang.org/appengine/internal/datastore
@@ -867,8 +868,6 @@ k8s.io/component-base/metrics/legacyregistry
 k8s.io/component-base/metrics/prometheus/workqueue
 k8s.io/component-base/metrics/testutil
 k8s.io/component-base/version
-# k8s.io/klog v1.0.0
-k8s.io/klog
 # k8s.io/klog/v2 v2.8.0
 ## explicit
 k8s.io/klog/v2
@@ -882,13 +881,14 @@ k8s.io/kube-openapi/pkg/util
 k8s.io/kube-openapi/pkg/util/proto
 k8s.io/kube-openapi/pkg/validation/spec
 # k8s.io/utils v0.0.0-20210111153108-fddb29f9d009 => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
+## explicit
 k8s.io/utils/buffer
 k8s.io/utils/integer
 k8s.io/utils/net
 k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.0.0-20210504004915-de8d9776f2a1
+# kmodules.xyz/client-go v0.0.0-20210504024435-1eb80721e9b8
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/apiextensions
