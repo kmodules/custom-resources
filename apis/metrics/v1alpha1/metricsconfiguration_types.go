@@ -21,9 +21,9 @@ import (
 )
 
 const (
-	ResourceKindMetricsConfiguration     = "MetricsConfiguration"
-	ResourceSingularMetricsConfiguration = "metricsconfiguration"
-	ResourcePluralMetricsConfiguration   = "metricsconfigurations"
+	ResourceKindMetricsConfiguration = "MetricsConfiguration"
+	ResourceMetricsConfiguration     = "metricsconfiguration"
+	ResourceMetricsConfigurations    = "metricsconfigurations"
 )
 
 // MetricsConfiguration defines a generic metrics configuration
