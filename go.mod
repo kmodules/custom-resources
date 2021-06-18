@@ -10,13 +10,13 @@ require (
 	github.com/kubernetes-sigs/service-catalog v0.3.1
 	gomodules.xyz/pointer v0.0.0-20201105071923-daf60fa55209
 	gomodules.xyz/runtime v0.2.0
-	k8s.io/api v0.21.0
-	k8s.io/apimachinery v0.21.0
-	k8s.io/client-go v0.21.0
+	k8s.io/api v0.21.1
+	k8s.io/apimachinery v0.21.1
+	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
-	kmodules.xyz/client-go v0.0.0-20210604221903-63c016279a47
-	kmodules.xyz/crd-schema-fuzz v0.0.0-20210503192455-da44af375c4c
+	kmodules.xyz/client-go v0.0.0-20210617233340-13d22e91512b
+	kmodules.xyz/crd-schema-fuzz v0.0.0-20210618002152-fae23aef5fb4
 	sigs.k8s.io/yaml v1.2.0
 )
 
@@ -88,8 +88,6 @@ replace github.com/googleapis/gnostic => github.com/googleapis/gnostic v0.4.1
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.5
 
-replace github.com/jetstack/cert-manager => github.com/kmodules/cert-manager v1.3.1-0.20210429172957-c5436c14ce0e
-
 replace github.com/prometheus-operator/prometheus-operator => github.com/prometheus-operator/prometheus-operator v0.47.0
 
 replace github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring => github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.47.0
@@ -106,21 +104,21 @@ replace google.golang.org/grpc => google.golang.org/grpc v1.27.1
 
 replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210503022716-7e2d4913a125
 
-replace k8s.io/api => k8s.io/api v0.21.0
+replace k8s.io/api => k8s.io/api v0.21.1
 
-replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.1-rc.0.0.20210405112358-ad4c2289ba4c
+replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.2-rc.0.0.20210617231004-332981b97d2d
 
-replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210427013338-53dee545b83c
+replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.2-0.20210617231348-daadbf0c8d5e
 
-replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.0
+replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.1
 
-replace k8s.io/client-go => k8s.io/client-go v0.21.0
+replace k8s.io/client-go => k8s.io/client-go v0.21.1
 
-replace k8s.io/component-base => k8s.io/component-base v0.21.0
+replace k8s.io/component-base => k8s.io/component-base v0.21.1
 
 replace k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 
-replace k8s.io/kubernetes => github.com/kmodules/kubernetes v1.22.0-alpha.0.0.20210427080452-22d2e66bae50
+replace k8s.io/kubernetes => github.com/kmodules/kubernetes v1.22.0-alpha.0.0.20210617232219-a432af45d932
 
 replace k8s.io/utils => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
 
