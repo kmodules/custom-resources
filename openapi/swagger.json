@@ -2993,7 +2993,6 @@
         },
         "states": {
           "description": "States handle metrics with label cardinality. States specify the possible states for a label and their corresponding MetricValue configuration.\n\nMetrics must contain either States or MetricValue. If both are specified, MetricValue will be ignored.",
-          "default": {},
           "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.metrics.v1alpha1.State"
         },
         "type": {
