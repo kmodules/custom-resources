@@ -822,7 +822,7 @@ k8s.io/utils/net
 k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.0.0-20210617233340-13d22e91512b
+# kmodules.xyz/client-go v0.0.0-20210715065708-d4f0cc74ead1
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
