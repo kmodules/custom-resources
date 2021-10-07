@@ -6,10 +6,12 @@ require (
 	github.com/go-openapi/spec v0.19.5
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/gofuzz v1.1.0
-	github.com/json-iterator/go v1.1.10
+	github.com/json-iterator/go v1.1.11
 	github.com/kubernetes-sigs/service-catalog v0.3.1
+	go.bytebuilders.dev/license-verifier v0.9.3
 	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/runtime v0.2.0
+	gomodules.xyz/x v0.0.8
 	k8s.io/api v0.21.1
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
@@ -17,6 +19,7 @@ require (
 	k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 	kmodules.xyz/client-go v0.0.0-20210928133955-8df5bb467db6
 	kmodules.xyz/crd-schema-fuzz v0.0.0-20210618002152-fae23aef5fb4
+	kmodules.xyz/resource-metrics v0.0.5
 	sigs.k8s.io/yaml v1.2.0
 )
 
