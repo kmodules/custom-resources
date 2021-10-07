@@ -28,7 +28,11 @@ const (
 	ResourceSiteInfos    = "siteinfos"
 )
 
+// +k8s:openapi-gen=true
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// +kubebuilder:object:root=true
+// +kubebuilder:resource:path=siteinfos,singular=siteinfo,scope=Cluster,categories={auditor,appscode,all}
 
 // SiteInfo captures information of a product deployment site.
 type SiteInfo struct {
