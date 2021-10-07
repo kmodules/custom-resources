@@ -28,21 +28,13 @@ const (
 	ResourceSiteInfos    = "siteinfos"
 )
 
-// SiteInfo captures information of a product deployment site.
-
-// +genclient
-// +genclient:nonNamespaced
-// +genclient:skipVerbs=updateStatus
-// +k8s:openapi-gen=true
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +kubebuilder:object:root=true
-// +kubebuilder:resource:path=siteinfos,singular=siteinfo,scope=Cluster,categories={metrics,appscode,all}
+// SiteInfo captures information of a product deployment site.
 type SiteInfo struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Product           *ProductInfo   `json:"product,omitempty"`
-	Kubernetes        KubernetesInfo `json:"kubernetes"`
+	metav1.TypeMeta `json:",inline"`
+	Product         *ProductInfo   `json:"product,omitempty"`
+	Kubernetes      KubernetesInfo `json:"kubernetes"`
 }
 
 type Version struct {

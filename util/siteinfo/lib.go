@@ -36,7 +36,12 @@ import (
 )
 
 func GetSiteInfo(cfg *rest.Config, kc kubernetes.Interface, nodes []*core.Node, licenseID string) (*auditorapi.SiteInfo, error) {
-	var si auditorapi.SiteInfo
+	si := auditorapi.SiteInfo{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: auditorapi.SchemeGroupVersion.String(),
+			Kind:       "SiteInfo",
+		},
+	}
 
 	if info.ProductName != "" || v.Version.Version != "" || licenseID != "" {
 		si.Product = &auditorapi.ProductInfo{}

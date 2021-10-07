@@ -16119,7 +16119,8 @@ func schema_custom_resources_apis_auditor_v1alpha1_SiteInfo(ref common.Reference
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Type: []string{"object"},
+				Description: "SiteInfo captures information of a product deployment site.",
+				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
 					"kind": {
 						SchemaProps: spec.SchemaProps{
@@ -16133,12 +16134,6 @@ func schema_custom_resources_apis_auditor_v1alpha1_SiteInfo(ref common.Reference
 							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
 							Type:        []string{"string"},
 							Format:      "",
-						},
-					},
-					"metadata": {
-						SchemaProps: spec.SchemaProps{
-							Default: map[string]interface{}{},
-							Ref:     ref("k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"),
 						},
 					},
 					"product": {
@@ -16157,7 +16152,7 @@ func schema_custom_resources_apis_auditor_v1alpha1_SiteInfo(ref common.Reference
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.KubernetesInfo", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ProductInfo"},
+			"kmodules.xyz/custom-resources/apis/auditor/v1alpha1.KubernetesInfo", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ProductInfo"},
 	}
 }
 

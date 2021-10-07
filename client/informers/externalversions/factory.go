@@ -25,7 +25,6 @@ import (
 
 	versioned "kmodules.xyz/custom-resources/client/clientset/versioned"
 	appcatalog "kmodules.xyz/custom-resources/client/informers/externalversions/appcatalog"
-	auditor "kmodules.xyz/custom-resources/client/informers/externalversions/auditor"
 	internalinterfaces "kmodules.xyz/custom-resources/client/informers/externalversions/internalinterfaces"
 	metrics "kmodules.xyz/custom-resources/client/informers/externalversions/metrics"
 
@@ -176,16 +175,11 @@ type SharedInformerFactory interface {
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
 	Appcatalog() appcatalog.Interface
-	Auditor() auditor.Interface
 	Metrics() metrics.Interface
 }
 
 func (f *sharedInformerFactory) Appcatalog() appcatalog.Interface {
 	return appcatalog.New(f, f.namespace, f.tweakListOptions)
-}
-
-func (f *sharedInformerFactory) Auditor() auditor.Interface {
-	return auditor.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Metrics() metrics.Interface {

@@ -27,16 +27,11 @@ import (
 
 type AuditorV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	SiteInfosGetter
 }
 
 // AuditorV1alpha1Client is used to interact with features provided by the auditor.appscode.com group.
 type AuditorV1alpha1Client struct {
 	restClient rest.Interface
-}
-
-func (c *AuditorV1alpha1Client) SiteInfos() SiteInfoInterface {
-	return newSiteInfos(c)
 }
 
 // NewForConfig creates a new AuditorV1alpha1Client for the given config.
