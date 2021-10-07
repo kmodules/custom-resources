@@ -130,6 +130,15 @@ func GetSiteInfo(cfg *rest.Config, kc kubernetes.Interface, nodes []*core.Node, 
 			nodes[i] = &result.Items[i]
 		}
 	}
+	RefreshNodeStats(&si, nodes)
+
+	return &si, nil
+}
+
+func RefreshNodeStats(si *auditorapi.SiteInfo, nodes []*core.Node) {
+	if len(nodes) == 0 {
+		return
+	}
 	si.Kubernetes.NodeStats.Count = len(nodes)
 
 	var capacity core.ResourceList
@@ -140,8 +149,6 @@ func GetSiteInfo(cfg *rest.Config, kc kubernetes.Interface, nodes []*core.Node, 
 	}
 	si.Kubernetes.NodeStats.Capacity = capacity
 	si.Kubernetes.NodeStats.Allocatable = allocatable
-
-	return &si, nil
 }
 
 func skipIP(ip net.IP) bool {
