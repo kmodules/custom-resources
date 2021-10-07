@@ -8,14 +8,14 @@ require (
 	github.com/google/gofuzz v1.1.0
 	github.com/json-iterator/go v1.1.10
 	github.com/kubernetes-sigs/service-catalog v0.3.1
-	gomodules.xyz/pointer v0.0.0-20201105071923-daf60fa55209
+	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/runtime v0.2.0
 	k8s.io/api v0.21.1
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
-	kmodules.xyz/client-go v0.0.0-20210715065708-d4f0cc74ead1
+	kmodules.xyz/client-go v0.0.0-20210928133955-8df5bb467db6
 	kmodules.xyz/crd-schema-fuzz v0.0.0-20210618002152-fae23aef5fb4
 	sigs.k8s.io/yaml v1.2.0
 )

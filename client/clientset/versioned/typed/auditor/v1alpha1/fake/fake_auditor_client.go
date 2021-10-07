@@ -19,12 +19,18 @@ limitations under the License.
 package fake
 
 import (
+	v1alpha1 "kmodules.xyz/custom-resources/client/clientset/versioned/typed/auditor/v1alpha1"
+
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
 type FakeAuditorV1alpha1 struct {
 	*testing.Fake
+}
+
+func (c *FakeAuditorV1alpha1) SiteInfos() v1alpha1.SiteInfoInterface {
+	return &FakeSiteInfos{c}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
