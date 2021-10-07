@@ -32,9 +32,10 @@ const (
 
 // SiteInfo captures information of a product deployment site.
 type SiteInfo struct {
-	metav1.TypeMeta `json:",inline"`
-	Product         *ProductInfo   `json:"product,omitempty"`
-	Kubernetes      KubernetesInfo `json:"kubernetes"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+	Product           *ProductInfo   `json:"product,omitempty"`
+	Kubernetes        KubernetesInfo `json:"kubernetes"`
 }
 
 type Version struct {

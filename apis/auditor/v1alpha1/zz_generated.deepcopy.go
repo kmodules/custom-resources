@@ -196,6 +196,7 @@ func (in *ProductInfo) DeepCopy() *ProductInfo {
 func (in *SiteInfo) DeepCopyInto(out *SiteInfo) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
 	if in.Product != nil {
 		in, out := &in.Product, &out.Product
 		*out = new(ProductInfo)

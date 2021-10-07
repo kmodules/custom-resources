@@ -16136,6 +16136,12 @@ func schema_custom_resources_apis_auditor_v1alpha1_SiteInfo(ref common.Reference
 							Format:      "",
 						},
 					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Default: map[string]interface{}{},
+							Ref:     ref("k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"),
+						},
+					},
 					"product": {
 						SchemaProps: spec.SchemaProps{
 							Ref: ref("kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ProductInfo"),
@@ -16152,7 +16158,7 @@ func schema_custom_resources_apis_auditor_v1alpha1_SiteInfo(ref common.Reference
 			},
 		},
 		Dependencies: []string{
-			"kmodules.xyz/custom-resources/apis/auditor/v1alpha1.KubernetesInfo", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ProductInfo"},
+			"k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.KubernetesInfo", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ProductInfo"},
 	}
 }
 
