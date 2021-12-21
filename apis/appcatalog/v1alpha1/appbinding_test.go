@@ -148,9 +148,8 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 			transforms: []v1alpha1.SecretTransform{
 				{
 					AddKeysFrom: &v1alpha1.AddKeysFromTransform{
-						SecretRef: &v1alpha1.ObjectReference{
-							Namespace: "ns",
-							Name:      "other-secret",
+						SecretRef: &core.LocalObjectReference{
+							Name: "other-secret",
 						},
 					},
 				},
@@ -160,8 +159,7 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 			},
 			otherSecret: &core.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Namespace: "ns",
-					Name:      "other-secret",
+					Name: "other-secret",
 				},
 				Data: map[string][]byte{
 					"bar": []byte("456"),
