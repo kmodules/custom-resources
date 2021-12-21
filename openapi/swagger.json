@@ -2653,7 +2653,7 @@
       "properties": {
         "secretRef": {
           "description": "The reference to the Secret that should be merged into the credentials Secret.",
-          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ObjectReference"
+          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
         }
       }
     },
@@ -2779,20 +2779,6 @@
         }
       }
     },
-    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.ObjectReference": {
-      "description": "ObjectReference contains enough information to let you locate the referenced object.",
-      "type": "object",
-      "properties": {
-        "name": {
-          "description": "Name of the referent.",
-          "type": "string"
-        },
-        "namespace": {
-          "description": "Namespace of the referent.",
-          "type": "string"
-        }
-      }
-    },
     "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.RemoveKeyTransform": {
       "description": "RemoveKeyTransform specifies that one of the credentials keys returned from the broker should not be included in the credentials Secret.",
       "type": "object",
@@ -2862,6 +2848,10 @@
           "description": "`name` is the name of the service. Required",
           "type": "string",
           "default": ""
+        },
+        "namespace": {
+          "description": "`namespace` is the namespace of the service.",
+          "type": "string"
         },
         "path": {
           "description": "`path` is an optional URL path which will be sent in any request to this service.",
