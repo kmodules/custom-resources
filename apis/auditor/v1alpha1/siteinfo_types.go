@@ -66,10 +66,15 @@ type ProductInfo struct {
 	ProductUID  string `json:"productUID,omitempty"`
 }
 
-type KubernetesInfo struct {
+type ClusterMetadata struct {
+	UID   string            `json:"uid"`
 	// https://github.com/kmodules/client-go/blob/master/tools/clusterid/lib.go
-	ClusterName  string            `json:"clusterName,omitempty"`
-	ClusterUID   string            `json:"clusterUID,omitempty"`
+	Name  string            `json:"name,omitempty"`
+	DisplayName   string            `json:"displayName,omitempty"`
+}
+
+type KubernetesInfo struct {
+	Cluster   ClusterMetadata            `json:"cluster,omitempty"`
 	Version      *version.Info     `json:"version,omitempty"`
 	ControlPlane *ControlPlaneInfo `json:"controlPlane,omitempty"`
 	NodeStats    NodeStats         `json:"nodeStats"`
