@@ -9,6 +9,7 @@ require (
 	github.com/json-iterator/go v1.1.11
 	github.com/kubernetes-sigs/service-catalog v0.3.1
 	go.bytebuilders.dev/license-verifier v0.9.3
+	golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b // indirect
 	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/runtime v0.2.0
 	gomodules.xyz/x v0.0.8
@@ -17,7 +18,7 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
-	kmodules.xyz/client-go v0.0.0-20220104114408-2a3a05dbe89f
+	kmodules.xyz/client-go v0.0.0-20211013093146-1fbfd52e78c9
 	kmodules.xyz/crd-schema-fuzz v0.0.0-20210618002152-fae23aef5fb4
 	kmodules.xyz/resource-metrics v0.0.6
 	sigs.k8s.io/yaml v1.2.0
