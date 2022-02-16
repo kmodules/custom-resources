@@ -26,6 +26,19 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// TypedObjectReference represents an typed namespaced object.
+type TypedObjectReference struct {
+	APIGroup string `json:"apiGroup,omitempty" protobuf:"bytes,1,opt,name=apiGroup"`
+	Kind     string `json:"kind,omitempty" protobuf:"bytes,2,opt,name=kind"`
+	// Namespace of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// +optional
+	Namespace string `json:"namespace,omitempty" protobuf:"bytes,3,opt,name=namespace"`
+	// Name of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	Name string `json:"name" protobuf:"bytes,4,opt,name=name"`
+}
+
 // ObjectReference contains enough information to let you inspect or modify the referred object.
 type ObjectReference struct {
 	// Namespace of the referent.
@@ -35,6 +48,24 @@ type ObjectReference struct {
 	// Name of the referent.
 	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name" protobuf:"bytes,2,opt,name=name"`
+}
+
+// WithNamespace sets the namespace if original namespace is empty.
+// Never changes the original ObjectReference.
+func (ref *ObjectReference) WithNamespace(fallback string) *ObjectReference {
+	if ref == nil {
+		return nil
+	}
+	if ref.Namespace != "" {
+		return ref
+	}
+	out := *ref
+	out.Namespace = fallback
+	return &out
+}
+
+func (ref ObjectReference) ObjectKey() client.ObjectKey {
+	return client.ObjectKey{Namespace: ref.Namespace, Name: ref.Name}
 }
 
 type OID string
@@ -48,6 +79,20 @@ type ObjectID struct {
 
 func (oid *ObjectID) OID() OID {
 	return OID(fmt.Sprintf("G=%s,K=%s,NS=%s,N=%s", oid.Group, oid.Kind, oid.Namespace, oid.Name))
+}
+
+// WithNamespace sets the namespace if original namespace is empty.
+// Never changes the original ObjectID.
+func (oid *ObjectID) WithNamespace(fallback string) *ObjectID {
+	if oid == nil {
+		return nil
+	}
+	if oid.Namespace != "" {
+		return oid
+	}
+	out := *oid
+	out.Namespace = fallback
+	return &out
 }
 
 func NewObjectID(obj client.Object) *ObjectID {

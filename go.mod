@@ -8,18 +8,19 @@ require (
 	github.com/google/gofuzz v1.1.0
 	github.com/json-iterator/go v1.1.11
 	github.com/kubernetes-sigs/service-catalog v0.3.1
-	go.bytebuilders.dev/license-verifier v0.9.3
+	github.com/sergi/go-diff v1.2.0 // indirect
+	go.bytebuilders.dev/license-verifier v0.9.7
 	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/runtime v0.2.0
-	gomodules.xyz/x v0.0.8
+	gomodules.xyz/x v0.0.10
 	k8s.io/api v0.21.1
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
-	k8s.io/klog/v2 v2.8.0
-	k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
-	kmodules.xyz/client-go v0.0.0-20220104114408-2a3a05dbe89f
+	k8s.io/klog/v2 v2.9.0
+	k8s.io/kube-openapi v0.0.0-20210421082810-95288971da7e
+	kmodules.xyz/client-go v0.0.0-20220215012708-9963581d69a7
 	kmodules.xyz/crd-schema-fuzz v0.0.0-20210618002152-fae23aef5fb4
-	kmodules.xyz/resource-metrics v0.0.6
+	kmodules.xyz/resource-metrics v0.0.8
 	sigs.k8s.io/yaml v1.2.0
 )
 
@@ -111,7 +112,7 @@ replace k8s.io/api => k8s.io/api v0.21.1
 
 replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.2-rc.0.0.20210617231004-332981b97d2d
 
-replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.2-0.20210716212718-83e5493ac170
+replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.2-0.20220112070009-e3f6e88991d9
 
 replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.1
 
