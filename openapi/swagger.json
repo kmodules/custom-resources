@@ -2725,6 +2725,10 @@
         "clientConfig"
       ],
       "properties": {
+        "clientCertificateSecret": {
+          "description": "ClientCertificateSecret is the name of the secret that will hold the client certificate and private key associated with the AppBinding.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+        },
         "clientConfig": {
           "description": "ClientConfig defines how to communicate with the app. Required",
           "default": {},
