@@ -132,6 +132,12 @@ type ClientConfig struct {
 	// CABundle is a PEM encoded CA bundle which will be used to validate the serving certificate of this app.
 	// +optional
 	CABundle []byte `json:"caBundle,omitempty" protobuf:"bytes,4,opt,name=caBundle"`
+
+	// ServerName is used to verify the hostname on the returned
+	// certificates unless InsecureSkipVerify is given. It is also included
+	// in the client's handshake to support virtual hosting unless it is
+	// an IP address.
+	ServerName string `json:"serverName,omitempty" protobuf:"bytes,5,opt,name=serverName"`
 }
 
 // ServiceReference holds a reference to Service.legacy.k8s.io
