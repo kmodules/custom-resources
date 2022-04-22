@@ -51,8 +51,11 @@ type MetricsConfigurationSpec struct {
 	// TargetRef defines the object for which metrics will be collected
 	TargetRef TargetRef `json:"targetRef" protobuf:"bytes,1,opt,name=targetRef"`
 
+	// List of Common labels which will be applied in the given Metrics
+	CommonLabels []Label `json:"commonLabels" protobuf:"bytes,2,rep,name=commonLabels"`
+
 	// List of Metrics configuration for the resource object defined in TargetRef
-	Metrics []Metrics `json:"metrics" protobuf:"bytes,2,rep,name=metrics"`
+	Metrics []Metrics `json:"metrics" protobuf:"bytes,3,rep,name=metrics"`
 }
 
 // TargetRef contains the Object's apiVersion & kind to specify the target resource

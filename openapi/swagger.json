@@ -3065,9 +3065,18 @@
       "type": "object",
       "required": [
         "targetRef",
+        "commonLabels",
         "metrics"
       ],
       "properties": {
+        "commonLabels": {
+          "description": "List of Common labels which will be applied in the given Metrics",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.metrics.v1alpha1.Label"
+          }
+        },
         "metrics": {
           "description": "List of Metrics configuration for the resource object defined in TargetRef",
           "type": "array",

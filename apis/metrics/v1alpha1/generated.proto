@@ -226,8 +226,11 @@ message MetricsConfigurationSpec {
   // TargetRef defines the object for which metrics will be collected
   optional TargetRef targetRef = 1;
 
+  // List of Common labels which will be applied in the given Metrics
+  repeated Label commonLabels = 2;
+
   // List of Metrics configuration for the resource object defined in TargetRef
-  repeated Metrics metrics = 2;
+  repeated Metrics metrics = 3;
 }
 
 // Parameter contains the information of a parameter used in expression evaluation

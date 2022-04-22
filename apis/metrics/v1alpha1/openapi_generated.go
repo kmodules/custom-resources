@@ -16100,6 +16100,20 @@ func schema_custom_resources_apis_metrics_v1alpha1_MetricsConfigurationSpec(ref 
 							Ref:         ref("kmodules.xyz/custom-resources/apis/metrics/v1alpha1.TargetRef"),
 						},
 					},
+					"commonLabels": {
+						SchemaProps: spec.SchemaProps{
+							Description: "List of Common labels which will be applied in the given Metrics",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("kmodules.xyz/custom-resources/apis/metrics/v1alpha1.Label"),
+									},
+								},
+							},
+						},
+					},
 					"metrics": {
 						SchemaProps: spec.SchemaProps{
 							Description: "List of Metrics configuration for the resource object defined in TargetRef",
@@ -16115,11 +16129,11 @@ func schema_custom_resources_apis_metrics_v1alpha1_MetricsConfigurationSpec(ref 
 						},
 					},
 				},
-				Required: []string{"targetRef", "metrics"},
+				Required: []string{"targetRef", "commonLabels", "metrics"},
 			},
 		},
 		Dependencies: []string{
-			"kmodules.xyz/custom-resources/apis/metrics/v1alpha1.Metrics", "kmodules.xyz/custom-resources/apis/metrics/v1alpha1.TargetRef"},
+			"kmodules.xyz/custom-resources/apis/metrics/v1alpha1.Label", "kmodules.xyz/custom-resources/apis/metrics/v1alpha1.Metrics", "kmodules.xyz/custom-resources/apis/metrics/v1alpha1.TargetRef"},
 	}
 }
 
