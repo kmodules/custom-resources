@@ -100,7 +100,7 @@ func (c *FakeMetricsConfigurations) Update(ctx context.Context, metricsConfigura
 // Delete takes name of the metricsConfiguration and deletes it. Returns an error if one occurs.
 func (c *FakeMetricsConfigurations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewRootDeleteAction(metricsconfigurationsResource, name), &v1alpha1.MetricsConfiguration{})
+		Invokes(testing.NewRootDeleteActionWithOptions(metricsconfigurationsResource, name, opts), &v1alpha1.MetricsConfiguration{})
 	return err
 }
 

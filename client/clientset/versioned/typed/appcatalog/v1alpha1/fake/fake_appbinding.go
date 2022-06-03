@@ -106,7 +106,7 @@ func (c *FakeAppBindings) Update(ctx context.Context, appBinding *v1alpha1.AppBi
 // Delete takes name of the appBinding and deletes it. Returns an error if one occurs.
 func (c *FakeAppBindings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(appbindingsResource, c.ns, name), &v1alpha1.AppBinding{})
+		Invokes(testing.NewDeleteActionWithOptions(appbindingsResource, c.ns, name, opts), &v1alpha1.AppBinding{})
 
 	return err
 }

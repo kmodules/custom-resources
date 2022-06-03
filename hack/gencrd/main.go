@@ -27,12 +27,12 @@ import (
 	metricsinstall "kmodules.xyz/custom-resources/apis/metrics/install"
 	metrics "kmodules.xyz/custom-resources/apis/metrics/v1alpha1"
 
-	"github.com/go-openapi/spec"
 	gort "gomodules.xyz/runtime"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/klog/v2"
 	"k8s.io/kube-openapi/pkg/common"
+	"k8s.io/kube-openapi/pkg/validation/spec"
 )
 
 func generateSwaggerJson() {
