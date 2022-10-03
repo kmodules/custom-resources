@@ -94,21 +94,25 @@ message AppBindingSpec {
   // +optional
   optional string type = 1;
 
+  // Reference to underlying application
+  // +optional
+  optional TypedObjectReference appRef = 2;
+
   // Version used to facilitate programmatic handling of application.
   // +optional
-  optional string version = 2;
+  optional string version = 3;
 
   // ClientConfig defines how to communicate with the app.
   // Required
-  optional ClientConfig clientConfig = 3;
+  optional ClientConfig clientConfig = 4;
 
   // Secret is the name of the secret to create in the AppBinding's
   // namespace that will hold the credentials associated with the AppBinding.
-  optional k8s.io.api.core.v1.LocalObjectReference secret = 4;
+  optional k8s.io.api.core.v1.LocalObjectReference secret = 5;
 
   // List of transformations that should be applied to the credentials
   // associated with the ServiceBinding before they are inserted into the Secret.
-  repeated SecretTransform secretTransforms = 5;
+  repeated SecretTransform secretTransforms = 6;
 
   // Parameters is a set of the parameters to be used to connect to the
   // app. The inline YAML/JSON payload to be translated into equivalent
@@ -122,11 +126,11 @@ message AppBindingSpec {
   // +optional
   // +kubebuilder:validation:EmbeddedResource
   // +kubebuilder:pruning:PreserveUnknownFields
-  optional k8s.io.apimachinery.pkg.runtime.RawExtension parameters = 6;
+  optional k8s.io.apimachinery.pkg.runtime.RawExtension parameters = 7;
 
   // TLSSecret is the name of the secret that will hold
   // the client certificate and private key associated with the AppBinding.
-  optional k8s.io.api.core.v1.LocalObjectReference tlsSecret = 7;
+  optional k8s.io.api.core.v1.LocalObjectReference tlsSecret = 8;
 }
 
 message AppReference {
@@ -325,5 +329,20 @@ message TaskRef {
   // Params specifies a list of parameter to pass to the Task. Stash will use this parameters to resolve the task.
   // +optional
   repeated Param params = 2;
+}
+
+message TypedObjectReference {
+  optional string apiGroup = 1;
+
+  optional string kind = 2;
+
+  // Namespace of the referent.
+  // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+  // +optional
+  optional string namespace = 3;
+
+  // Name of the referent.
+  // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+  optional string name = 4;
 }
 
