@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	kmapi "kmodules.xyz/client-go/api/v1"
+
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -51,6 +53,10 @@ type AppBindingSpec struct {
 	// Type used to facilitate programmatic handling of application.
 	// +optional
 	Type AppType `json:"type,omitempty"`
+
+	// Reference to underlying application
+	// +optional
+	AppRef *kmapi.TypedObjectReference `json:"appRef,omitempty"`
 
 	// Version used to facilitate programmatic handling of application.
 	// +optional
