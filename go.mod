@@ -6,8 +6,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/gofuzz v1.2.0
 	github.com/json-iterator/go v1.1.12
-	github.com/kubernetes-sigs/service-catalog v0.3.1
-	go.bytebuilders.dev/license-verifier v0.12.1-0.20221113063237-6eb88040dd50
+	go.bytebuilders.dev/license-verifier v0.13.0
 	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/runtime v0.3.0
 	gomodules.xyz/x v0.0.14
@@ -16,7 +15,7 @@ require (
 	k8s.io/client-go v0.25.1
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kube-openapi v0.0.0-20220803162953-67bda5d908f1
-	kmodules.xyz/client-go v0.25.10
+	kmodules.xyz/client-go v0.25.0
 	kmodules.xyz/crd-schema-fuzz v0.25.0
 	kmodules.xyz/resource-metrics v0.25.0
 	sigs.k8s.io/yaml v1.3.0
@@ -25,8 +24,7 @@ require (
 require (
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
 	github.com/NYTimes/gziphandler v1.1.1 // indirect
-	github.com/PuerkitoBio/purell v1.1.1 // indirect
-	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
+	github.com/PuerkitoBio/purell v1.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -65,7 +63,7 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
-	github.com/spf13/cobra v1.5.0 // indirect
+	github.com/spf13/cobra v1.4.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
@@ -86,7 +84,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
-	golang.org/x/crypto v0.6.0 // indirect
+	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8 // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
@@ -109,7 +107,7 @@ require (
 	k8s.io/utils v0.0.0-20220728103510-ee6ede2d64ed // indirect
 	kmodules.xyz/offshoot-api v0.25.0 // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.0.32 // indirect
-	sigs.k8s.io/controller-runtime v0.13.1 // indirect
+	sigs.k8s.io/controller-runtime v0.13.0 // indirect
 	sigs.k8s.io/json v0.0.0-20220713155537-f223a00ba0e2 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 )

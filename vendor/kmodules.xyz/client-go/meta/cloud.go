@@ -19,9 +19,8 @@ package meta
 import (
 	"crypto/x509"
 	"errors"
-	"io"
+	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -31,7 +30,7 @@ import (
 // ref: https://cloud.google.com/compute/docs/storing-retrieving-metadata
 func TestGKE() (string, error) {
 	// ref: https://github.com/kubernetes/kubernetes/blob/a0f94123616c275f94e7a5b680d60d6f34e92f37/pkg/credentialprovider/gcp/metadata.go#L115
-	data, err := os.ReadFile("/sys/class/dmi/id/product_name")
+	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_name")
 	if err != nil {
 		return "", err
 	}
@@ -51,7 +50,7 @@ func TestGKE() (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -80,13 +79,13 @@ func TestAKS(cert *x509.Certificate) (string, error) {
 
 // ref: https://cloud.google.com/compute/docs/storing-retrieving-metadata
 func isAKS() error {
-	data, err := os.ReadFile("/sys/class/dmi/id/sys_vendor")
+	data, err := ioutil.ReadFile("/sys/class/dmi/id/sys_vendor")
 	if err != nil {
 		return err
 	}
 	sysVendor := strings.TrimSpace(string(data))
 
-	data, err = os.ReadFile("/sys/class/dmi/id/product_name")
+	data, err = ioutil.ReadFile("/sys/class/dmi/id/product_name")
 	if err != nil {
 		return err
 	}
@@ -111,7 +110,7 @@ func TestEKS(cert *x509.Certificate) (string, error) {
 
 // ref: https://cloud.google.com/compute/docs/storing-retrieving-metadata
 func isEKS() error {
-	data, err := os.ReadFile("/sys/class/dmi/id/sys_vendor")
+	data, err := ioutil.ReadFile("/sys/class/dmi/id/sys_vendor")
 	if err != nil {
 		return err
 	}
