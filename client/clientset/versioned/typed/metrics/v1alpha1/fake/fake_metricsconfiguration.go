@@ -20,12 +20,14 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
 	v1alpha1 "kmodules.xyz/custom-resources/apis/metrics/v1alpha1"
+	metricsv1alpha1 "kmodules.xyz/custom-resources/client/applyconfiguration/metrics/v1alpha1"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -36,9 +38,9 @@ type FakeMetricsConfigurations struct {
 	Fake *FakeMetricsV1alpha1
 }
 
-var metricsconfigurationsResource = schema.GroupVersionResource{Group: "metrics.appscode.com", Version: "v1alpha1", Resource: "metricsconfigurations"}
+var metricsconfigurationsResource = v1alpha1.SchemeGroupVersion.WithResource("metricsconfigurations")
 
-var metricsconfigurationsKind = schema.GroupVersionKind{Group: "metrics.appscode.com", Version: "v1alpha1", Kind: "MetricsConfiguration"}
+var metricsconfigurationsKind = v1alpha1.SchemeGroupVersion.WithKind("MetricsConfiguration")
 
 // Get takes name of the metricsConfiguration, and returns the corresponding metricsConfiguration object, and an error if there is any.
 func (c *FakeMetricsConfigurations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.MetricsConfiguration, err error) {
@@ -116,6 +118,27 @@ func (c *FakeMetricsConfigurations) DeleteCollection(ctx context.Context, opts v
 func (c *FakeMetricsConfigurations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MetricsConfiguration, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootPatchSubresourceAction(metricsconfigurationsResource, name, pt, data, subresources...), &v1alpha1.MetricsConfiguration{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.MetricsConfiguration), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied metricsConfiguration.
+func (c *FakeMetricsConfigurations) Apply(ctx context.Context, metricsConfiguration *metricsv1alpha1.MetricsConfigurationApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.MetricsConfiguration, err error) {
+	if metricsConfiguration == nil {
+		return nil, fmt.Errorf("metricsConfiguration provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(metricsConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	name := metricsConfiguration.Name
+	if name == nil {
+		return nil, fmt.Errorf("metricsConfiguration.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewRootPatchSubresourceAction(metricsconfigurationsResource, *name, types.ApplyPatchType, data), &v1alpha1.MetricsConfiguration{})
 	if obj == nil {
 		return nil, err
 	}

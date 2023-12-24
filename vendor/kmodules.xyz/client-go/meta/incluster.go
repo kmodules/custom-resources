@@ -20,7 +20,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -30,6 +29,13 @@ import (
 	core "k8s.io/api/core/v1"
 	"k8s.io/client-go/rest"
 )
+
+// xref: https://kubernetes.io/docs/concepts/workloads/pods/downward-api/
+// xref: https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/#use-pod-fields-as-values-for-environment-variables
+
+func NodeName() string {
+	return os.Getenv("NODE_NAME")
+}
 
 func PodName() string {
 	if name := os.Getenv("POD_NAME"); name != "" {
@@ -44,7 +50,7 @@ func PodNamespace() string {
 		return ns
 	}
 
-	if data, err := ioutil.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"); err == nil {
+	if data, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"); err == nil {
 		if ns := strings.TrimSpace(string(data)); len(ns) > 0 {
 			return ns
 		}
@@ -52,12 +58,8 @@ func PodNamespace() string {
 	return core.NamespaceDefault
 }
 
-// Deprecated: use PodNamespace
-func Namespace() string {
-	if ns := os.Getenv("KUBE_NAMESPACE"); ns != "" {
-		return ns
-	}
-	return PodNamespace()
+func PodServiceAccount() string {
+	return os.Getenv("POD_SERVICE_ACCOUNT")
 }
 
 // PossiblyInCluster returns true if loading an inside-kubernetes-cluster is possible.

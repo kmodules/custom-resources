@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// nolint: goconst
 package meta
 
 import (
@@ -148,7 +149,6 @@ func UnmarshalFromJSON(data []byte, gv schema.GroupVersion) (runtime.Object, err
 //
 // WARNING: `json` tags are not respected when struct converted to map[string]interface{}
 // WARNING: Embedded structs are not decoded properly: https://github.com/mitchellh/mapstructure/pull/80
-//
 func Decode(input interface{}, output interface{}) error {
 	config := &mapstructure.DecoderConfig{
 		DecodeHook: StringToQuantityHookFunc(),

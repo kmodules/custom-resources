@@ -115,6 +115,8 @@ func RenderOpenAPISpec(cfg Config) (string, error) {
 	}
 	serverConfig.OpenAPIConfig = genericapiserver.DefaultOpenAPIConfig(cfg.GetOpenAPIDefinitions, openapinamer.NewDefinitionNamer(cfg.Scheme))
 	serverConfig.OpenAPIConfig.Info.InfoProps = cfg.Info
+	serverConfig.OpenAPIV3Config = genericapiserver.DefaultOpenAPIV3Config(cfg.GetOpenAPIDefinitions, openapinamer.NewDefinitionNamer(cfg.Scheme))
+	serverConfig.OpenAPIV3Config.Info.InfoProps = cfg.Info
 
 	genericServer, err := serverConfig.Complete().New("stash-server", genericapiserver.NewEmptyDelegate()) // completion is done in Complete, no need for a second time
 	if err != nil {
@@ -137,7 +139,7 @@ func RenderOpenAPISpec(cfg Config) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			list, err := cfg.Scheme.New(ti.GroupVersion.WithKind(ti.Kind + "List"))
+			list, err := cfg.Scheme.New(ti.GroupVersion.WithKind(ti.Kind + "List")) // nolint: goconst
 			if err != nil {
 				return "", err
 			}
@@ -188,7 +190,7 @@ func RenderOpenAPISpec(cfg Config) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			list, err := cfg.Scheme.New(ti.GroupVersion.WithKind(ti.Kind + "List"))
+			list, err := cfg.Scheme.New(ti.GroupVersion.WithKind(ti.Kind + "List")) // nolint: goconst
 			if err != nil {
 				return "", err
 			}
@@ -239,7 +241,7 @@ func RenderOpenAPISpec(cfg Config) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			list, err := cfg.Scheme.New(ti.GroupVersion.WithKind(ti.Kind + "List"))
+			list, err := cfg.Scheme.New(ti.GroupVersion.WithKind(ti.Kind + "List")) // nolint: goconst
 			if err != nil {
 				return "", err
 			}
