@@ -3,6 +3,7 @@ module kmodules.xyz/custom-resources
 go 1.21.5
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/gofuzz v1.2.0
 	github.com/json-iterator/go v1.1.12

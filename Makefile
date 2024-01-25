@@ -108,6 +108,7 @@ DOCKER_REPO_ROOT := /go/src/$(GO_PKG)/$(REPO)
 .PHONY: clientset
 clientset:
 	@docker run --rm	                                 \
+		-u $$(id -u):$$(id -g)                           \
 		-v /tmp:/.cache                                  \
 		-v $$(pwd):$(DOCKER_REPO_ROOT)                   \
 		-w $(DOCKER_REPO_ROOT)                           \
