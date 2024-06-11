@@ -20,11 +20,8 @@ package fake
 
 import (
 	"context"
-	json "encoding/json"
-	"fmt"
 
 	v1alpha1 "kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
-	appcatalogv1alpha1 "kmodules.xyz/custom-resources/client/applyconfiguration/appcatalog/v1alpha1"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -125,28 +122,6 @@ func (c *FakeAppBindings) DeleteCollection(ctx context.Context, opts v1.DeleteOp
 func (c *FakeAppBindings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppBinding, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(appbindingsResource, c.ns, name, pt, data, subresources...), &v1alpha1.AppBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppBinding), err
-}
-
-// Apply takes the given apply declarative configuration, applies it and returns the applied appBinding.
-func (c *FakeAppBindings) Apply(ctx context.Context, appBinding *appcatalogv1alpha1.AppBindingApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.AppBinding, err error) {
-	if appBinding == nil {
-		return nil, fmt.Errorf("appBinding provided to Apply must not be nil")
-	}
-	data, err := json.Marshal(appBinding)
-	if err != nil {
-		return nil, err
-	}
-	name := appBinding.Name
-	if name == nil {
-		return nil, fmt.Errorf("appBinding.Name must be provided to Apply")
-	}
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(appbindingsResource, c.ns, *name, types.ApplyPatchType, data), &v1alpha1.AppBinding{})
 
 	if obj == nil {
 		return nil, err

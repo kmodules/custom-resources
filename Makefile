@@ -22,7 +22,7 @@ BIN      := custom-resources
 CRD_OPTIONS          ?= "crd:allowDangerousTypes=true"
 # https://github.com/appscodelabs/gengo-builder
 CODE_GENERATOR_IMAGE ?= ghcr.io/appscode/gengo:release-1.29
-API_GROUPS           ?= appcatalog:v1alpha1 auditor:v1alpha1 metrics:v1alpha1
+API_GROUPS           ?= appcatalog:v1alpha1 metrics:v1alpha1
 
 # This version-strategy uses git tags to set the version string
 git_branch       := $(shell git rev-parse --abbrev-ref HEAD)
@@ -48,7 +48,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_PKGS := apis client crds util
+SRC_PKGS := apis client crds
 SRC_DIRS := $(SRC_PKGS) hack/gencrd # directories which hold app source (not vendored)
 
 DOCKER_PLATFORMS := linux/amd64 linux/arm linux/arm64
@@ -116,7 +116,7 @@ clientset:
 		--env HTTPS_PROXY=$(HTTPS_PROXY)                 \
 		$(CODE_GENERATOR_IMAGE)                          \
 		/go/src/k8s.io/code-generator/generate-groups.sh \
-			all                                          \
+			client,deepcopy,informer,lister              \
 			$(GO_PKG)/$(REPO)/client                     \
 			$(GO_PKG)/$(REPO)/apis                       \
 			"$(API_GROUPS)" \
