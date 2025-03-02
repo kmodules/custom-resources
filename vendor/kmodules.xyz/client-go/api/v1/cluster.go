@@ -58,9 +58,10 @@ const (
 	ClusterProviderNameKey string = "cluster.appscode.com/provider"
 	ClusterProfileLabel    string = "cluster.appscode.com/profile"
 
-	AceOrgIDKey     string = "ace.appscode.com/org-id"
-	ClientOrgKey    string = "ace.appscode.com/client-org"
-	ClientKeyPrefix string = "client.ace.appscode.com/"
+	AceOrgIDKey            string = "ace.appscode.com/org-id"
+	ClientOrgKey           string = "ace.appscode.com/client-org"
+	ClientOrgMonitoringKey string = "ace.appscode.com/client-org-monitoring"
+	ClientKeyPrefix        string = "client.ace.appscode.com/"
 
 	ClusterClaimKeyID       string = "id.k8s.io"
 	ClusterClaimKeyInfo     string = "cluster.ace.info"
@@ -192,7 +193,7 @@ type ClusterInfo struct {
 	CAPI *CAPIClusterInfo `json:"capi" protobuf:"bytes,4,opt,name=capi"`
 }
 
-// +kubebuilder:validation:Enum=capa;capg;capz
+// +kubebuilder:validation:Enum=capa;capg;capz;caph;capk
 type CAPIProvider string
 
 const (
@@ -200,6 +201,7 @@ const (
 	CAPIProviderCAPG CAPIProvider = "capg"
 	CAPIProviderCAPZ CAPIProvider = "capz"
 	CAPIProviderCAPH CAPIProvider = "caph"
+	CAPIProviderCAPK CAPIProvider = "capk"
 )
 
 type ClusterClaimInfo struct {
