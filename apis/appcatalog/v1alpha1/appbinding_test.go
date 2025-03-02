@@ -22,11 +22,11 @@ import (
 
 	"kmodules.xyz/custom-resources/apis/appcatalog/v1alpha1"
 
-	types "gomodules.xyz/pointer"
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	fakek8s "k8s.io/client-go/kubernetes/fake"
+	"k8s.io/utils/ptr"
 )
 
 func newAppBinding(t string) *v1alpha1.AppBinding {
@@ -112,7 +112,7 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 				{
 					AddKey: &v1alpha1.AddKeyTransform{
 						Key:         "bar",
-						StringValue: types.StringP("456"),
+						StringValue: ptr.To("456"),
 					},
 				},
 			},
@@ -131,7 +131,7 @@ func TestAppBinding_TransformCredentials(t *testing.T) {
 					AddKey: &v1alpha1.AddKeyTransform{
 						Key:         "bar",
 						Value:       []byte("456"),
-						StringValue: types.StringP("789"),
+						StringValue: ptr.To("789"),
 					},
 				},
 			},

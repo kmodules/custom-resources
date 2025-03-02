@@ -351,6 +351,9 @@
             "$ref": "#/parameters/gracePeriodSeconds--K5HaBOS"
           },
           {
+            "$ref": "#/parameters/ignoreStoreReadErrorWithClusterBreakingPotential-QbNkfIqj"
+          },
+          {
             "$ref": "#/parameters/labelSelector-5Zw57w4C"
           },
           {
@@ -527,6 +530,9 @@
           },
           {
             "$ref": "#/parameters/gracePeriodSeconds--K5HaBOS"
+          },
+          {
+            "$ref": "#/parameters/ignoreStoreReadErrorWithClusterBreakingPotential-QbNkfIqj"
           },
           {
             "$ref": "#/parameters/orphanDependents-uRB25kX5"
@@ -1102,6 +1108,9 @@
             "$ref": "#/parameters/gracePeriodSeconds--K5HaBOS"
           },
           {
+            "$ref": "#/parameters/ignoreStoreReadErrorWithClusterBreakingPotential-QbNkfIqj"
+          },
+          {
             "$ref": "#/parameters/labelSelector-5Zw57w4C"
           },
           {
@@ -1275,6 +1284,9 @@
           },
           {
             "$ref": "#/parameters/gracePeriodSeconds--K5HaBOS"
+          },
+          {
+            "$ref": "#/parameters/ignoreStoreReadErrorWithClusterBreakingPotential-QbNkfIqj"
           },
           {
             "$ref": "#/parameters/orphanDependents-uRB25kX5"
@@ -1533,6 +1545,32 @@
           "$ref": "#/parameters/watch-XNNPZGbK"
         }
       ]
+    },
+    "/version/": {
+      "get": {
+        "description": "get the code version",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "version"
+        ],
+        "operationId": "getCodeVersion",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/io.k8s.apimachinery.pkg.version.Info"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1765,6 +1803,10 @@
           "description": "The duration in seconds before the object should be deleted. Value must be non-negative integer. The value zero indicates delete immediately. If this value is nil, the default grace period for the specified type will be used. Defaults to a per object value if not specified. zero means delete immediately.",
           "type": "integer",
           "format": "int64"
+        },
+        "ignoreStoreReadErrorWithClusterBreakingPotential": {
+          "description": "if set to true, it will trigger an unsafe deletion of the resource in case the normal deletion flow fails with a corrupt object error. A resource is considered corrupt if it can not be retrieved from the underlying storage successfully because of a) its data can not be transformed e.g. decryption failure, or b) it fails to decode into an object. NOTE: unsafe deletion ignores finalizer constraints, skips precondition checks, and removes the object from the storage. WARNING: This may potentially break the cluster if the workload associated with the resource being unsafe-deleted relies on normal deletion flow. Use only if you REALLY know what you are doing. The default value is false, and the user must opt in to enable it",
+          "type": "boolean"
         },
         "kind": {
           "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -2214,8 +2256,61 @@
       "description": "RawExtension is used to hold extensions in external versions.\n\nTo use this, make a field which has RawExtension as its type in your external, versioned struct, and Object in your internal struct. You also need to register your various plugin types.\n\n// Internal package:\n\n\ttype MyAPIObject struct {\n\t\truntime.TypeMeta `json:\",inline\"`\n\t\tMyPlugin runtime.Object `json:\"myPlugin\"`\n\t}\n\n\ttype PluginA struct {\n\t\tAOption string `json:\"aOption\"`\n\t}\n\n// External package:\n\n\ttype MyAPIObject struct {\n\t\truntime.TypeMeta `json:\",inline\"`\n\t\tMyPlugin runtime.RawExtension `json:\"myPlugin\"`\n\t}\n\n\ttype PluginA struct {\n\t\tAOption string `json:\"aOption\"`\n\t}\n\n// On the wire, the JSON will look something like this:\n\n\t{\n\t\t\"kind\":\"MyAPIObject\",\n\t\t\"apiVersion\":\"v1\",\n\t\t\"myPlugin\": {\n\t\t\t\"kind\":\"PluginA\",\n\t\t\t\"aOption\":\"foo\",\n\t\t},\n\t}\n\nSo what happens? Decode first uses json or yaml to unmarshal the serialized data into your external MyAPIObject. That causes the raw JSON to be stored, but not unpacked. The next step is to copy (using pkg/conversion) into the internal struct. The runtime package's DefaultScheme has conversion functions installed which will unpack the JSON stored in RawExtension, turning it into the correct object type, and storing it in the Object. (TODO: In the case where the object is of an unknown type, a runtime.Unknown object will be created and stored.)",
       "type": "object"
     },
+    "io.k8s.apimachinery.pkg.version.Info": {
+      "description": "Info contains versioning information. how we'll want to distribute that information.",
+      "type": "object",
+      "required": [
+        "major",
+        "minor",
+        "gitVersion",
+        "gitCommit",
+        "gitTreeState",
+        "buildDate",
+        "goVersion",
+        "compiler",
+        "platform"
+      ],
+      "properties": {
+        "buildDate": {
+          "type": "string",
+          "default": ""
+        },
+        "compiler": {
+          "type": "string",
+          "default": ""
+        },
+        "gitCommit": {
+          "type": "string",
+          "default": ""
+        },
+        "gitTreeState": {
+          "type": "string",
+          "default": ""
+        },
+        "gitVersion": {
+          "type": "string",
+          "default": ""
+        },
+        "goVersion": {
+          "type": "string",
+          "default": ""
+        },
+        "major": {
+          "type": "string",
+          "default": ""
+        },
+        "minor": {
+          "type": "string",
+          "default": ""
+        },
+        "platform": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
     "xyz.kmodules.client-go.api.v1.TypedObjectReference": {
-      "description": "TypedObjectReference represents an typed namespaced object.",
+      "description": "TypedObjectReference represents a typed namespaced object.",
       "type": "object",
       "required": [
         "name"
@@ -2858,6 +2953,13 @@
       "type": "integer",
       "description": "The duration in seconds before the object should be deleted. Value must be non-negative integer. The value zero indicates delete immediately. If this value is nil, the default grace period for the specified type will be used. Defaults to a per object value if not specified. zero means delete immediately.",
       "name": "gracePeriodSeconds",
+      "in": "query"
+    },
+    "ignoreStoreReadErrorWithClusterBreakingPotential-QbNkfIqj": {
+      "uniqueItems": true,
+      "type": "boolean",
+      "description": "if set to true, it will trigger an unsafe deletion of the resource in case the normal deletion flow fails with a corrupt object error. A resource is considered corrupt if it can not be retrieved from the underlying storage successfully because of a) its data can not be transformed e.g. decryption failure, or b) it fails to decode into an object. NOTE: unsafe deletion ignores finalizer constraints, skips precondition checks, and removes the object from the storage. WARNING: This may potentially break the cluster if the workload associated with the resource being unsafe-deleted relies on normal deletion flow. Use only if you REALLY know what you are doing. The default value is false, and the user must opt in to enable it",
+      "name": "ignoreStoreReadErrorWithClusterBreakingPotential",
       "in": "query"
     },
     "labelSelector-5Zw57w4C": {
