@@ -360,8 +360,8 @@ golang.org/x/crypto/salsa20/salsa
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/slices
-# golang.org/x/net v0.35.0
-## explicit; go 1.18
+# golang.org/x/net v0.36.0
+## explicit; go 1.23.0
 golang.org/x/net/context
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2
@@ -410,7 +410,7 @@ golang.org/x/text/unicode/norm
 # golang.org/x/time v0.10.0
 ## explicit; go 1.18
 golang.org/x/time/rate
-# gomodules.xyz/jsonpatch/v2 v2.4.0
+# gomodules.xyz/jsonpatch/v2 v2.5.0
 ## explicit; go 1.20
 gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/runtime v0.3.0
@@ -1247,7 +1247,7 @@ k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/ptr
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.30.47-0.20250303073751-80d02d19452f
+# kmodules.xyz/client-go v0.32.0
 ## explicit; go 1.23.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1255,7 +1255,7 @@ kmodules.xyz/client-go/apiextensions
 kmodules.xyz/client-go/apiextensions/v1
 kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/openapi
-# kmodules.xyz/crd-schema-fuzz v0.29.2-0.20250302110413-c5b140ca984a
+# kmodules.xyz/crd-schema-fuzz v0.32.0
 ## explicit; go 1.23.0
 kmodules.xyz/crd-schema-fuzz
 # sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.31.0
