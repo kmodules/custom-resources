@@ -1247,7 +1247,7 @@ k8s.io/utils/path
 k8s.io/utils/pointer
 k8s.io/utils/ptr
 k8s.io/utils/trace
-# kmodules.xyz/client-go v0.30.47-0.20250303073751-80d02d19452f
+# kmodules.xyz/client-go v0.30.47-0.20250308053642-38a9e7b6982e
 ## explicit; go 1.23.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1

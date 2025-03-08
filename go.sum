@@ -340,8 +340,8 @@ k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7 h1:hcha5B1kVACrLujCKLbr8X
 k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7/go.mod h1:GewRfANuJ70iYzvn+i4lezLDAFzvjxZYK1gn1lWcfas=
 k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 h1:M3sRQVHv7vB20Xc2ybTt7ODCeFj6JSWYFzOFnYeS6Ro=
 k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
-kmodules.xyz/client-go v0.30.47-0.20250303073751-80d02d19452f h1:8IEjtg0FfUb5H6nyMWRnx16MqvZoMJ4gnIXD1xChfLI=
-kmodules.xyz/client-go v0.30.47-0.20250303073751-80d02d19452f/go.mod h1:ywskpCT3t3hGx/1VBvqx51YPeUvKd6g29ckoYaFs96o=
+kmodules.xyz/client-go v0.30.47-0.20250308053642-38a9e7b6982e h1:oUglAoC1whXvG2TUAj+lz6tAW1uMGWnbORKh5lo4ku0=
+kmodules.xyz/client-go v0.30.47-0.20250308053642-38a9e7b6982e/go.mod h1:ywskpCT3t3hGx/1VBvqx51YPeUvKd6g29ckoYaFs96o=
 kmodules.xyz/crd-schema-fuzz v0.29.2-0.20250302110413-c5b140ca984a h1:u9td8ifa0dpwNXd8OphUk0my177w6zP1fpjQ4Jt9kIY=
 kmodules.xyz/crd-schema-fuzz v0.29.2-0.20250302110413-c5b140ca984a/go.mod h1:UsjyWBW13K3KJ9q1RFzNW2fV7q6e2iY6svoRGIDppZY=
 sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.31.0 h1:CPT0ExVicCzcpeN4baWEV2ko2Z/AsiZgEdwgcfwLgMo=
