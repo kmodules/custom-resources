@@ -66,9 +66,9 @@ type AppBindingSpec struct {
 	// Required
 	ClientConfig ClientConfig `json:"clientConfig"`
 
-	// Secret is the name of the secret to create in the AppBinding's
+	// Secret is the name and type of the secret to create in the AppBinding's
 	// namespace that will hold the credentials associated with the AppBinding.
-	Secret *core.LocalObjectReference `json:"secret,omitempty"`
+	Secret *SecretReference `json:"secret,omitempty"`
 
 	// List of transformations that should be applied to the credentials
 	// associated with the ServiceBinding before they are inserted into the Secret.
@@ -313,4 +313,11 @@ type AddKeysFromTransform struct {
 type RemoveKeyTransform struct {
 	// The key to remove from the Secret
 	Key string `json:"key"`
+}
+
+type SecretReference struct {
+	// +optional
+	// Two possible groups: "", virtual-secrets.dev
+	ApiGroup                  string `json:"apiGroup,omitempty"`
+	core.LocalObjectReference `json:",inline,omitempty"`
 }
