@@ -1,0 +1,32 @@
+apiVersion: appcatalog.appscode.com/v1alpha1
+kind: AppBinding
+metadata:
+  name: sdb
+  namespace: default
+spec:
+  appRef:
+    apiGroup: kubedb.com
+    kind: Singlestore
+    name: sdb
+    namespace: demo
+  clientConfig:
+    service:
+      name: sdb
+      path: /
+      port: 3306
+      scheme: tcp
+    url: tcp(sdb.demo.svc:3306)/
+  parameters:
+    apiVersion: config.kubedb.com/v1alpha1
+    kind: SinglestoreConfiguration
+    masterAggregator: sdb-aggregator-0.sdb-pods.demo.svc
+    stash:
+      addon:
+        backupTask:
+          name: ""
+        restoreTask:
+          name: ""
+  secret:
+    name: sdb-root-cred
+  type: kubedb.com/singlestore
+  version: 8.7.10
