@@ -2449,7 +2449,7 @@
         },
         "secret": {
           "description": "Secret is the name of the secret to create in the AppBinding's namespace that will hold the credentials associated with the AppBinding.",
-          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.TypedLocalObjectReference"
         },
         "secretTransforms": {
           "description": "List of transformations that should be applied to the credentials associated with the ServiceBinding before they are inserted into the Secret.",
@@ -2461,7 +2461,7 @@
         },
         "tlsSecret": {
           "description": "TLSSecret is the name of the secret that will hold the client certificate and private key associated with the AppBinding.",
-          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+          "$ref": "#/definitions/xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.TypedLocalObjectReference"
         },
         "type": {
           "description": "Type used to facilitate programmatic handling of application.",
@@ -2594,6 +2594,30 @@
           "default": ""
         }
       }
+    },
+    "xyz.kmodules.custom-resources.apis.appcatalog.v1alpha1.TypedLocalObjectReference": {
+      "type": "object",
+      "required": [
+        "kind",
+        "name"
+      ],
+      "properties": {
+        "apiGroup": {
+          "description": "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is the type of resource being referenced",
+          "type": "string",
+          "default": ""
+        },
+        "name": {
+          "description": "Name is the name of resource being referenced",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-kubernetes-map-type": "atomic"
     },
     "xyz.kmodules.custom-resources.apis.metrics.v1alpha1.Field": {
       "description": "Field contains the information of the field for which metric is collected. Example: To collect available replica count for a Deployment, Field's Path will be .statue.availableReplicas and the Type will be Integer.\n\nWhen some labels are collected with metric value 1 and the values are not from an array then Field can be skipped or will be ignored if specified. Otherwise Field must be specified.",
