@@ -82,7 +82,7 @@ func PatchAppBindingObject(ctx context.Context, c cs.AppcatalogV1alpha1Interface
 
 func TryUpdateAppBinding(ctx context.Context, c cs.AppcatalogV1alpha1Interface, meta metav1.ObjectMeta, transform func(*api.AppBinding) *api.AppBinding, opts metav1.UpdateOptions) (result *api.AppBinding, err error) {
 	attempt := 0
-	err = wait.PollImmediate(kutil.RetryInterval, kutil.RetryTimeout, func() (bool, error) {
+	err = wait.PollUntilContextTimeout(context.Background(), kutil.RetryInterval, kutil.RetryTimeout, true, func(ctx context.Context) (bool, error) {
 		attempt++
 		cur, e2 := c.AppBindings(meta.Namespace).Get(ctx, meta.Name, metav1.GetOptions{})
 		if kerr.IsNotFound(e2) {
