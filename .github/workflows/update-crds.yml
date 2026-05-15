@@ -11,17 +11,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Set up Go 1.25
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
         with:
           go-version: '1.25'
         id: go
 
-      - uses: actions/checkout@v4
-
-      - name: Install GitHub CLI
-        run: |
-          curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
-          sudo mv bin/hub /usr/local/bin
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Install crd-importer
         run: |
@@ -31,21 +26,21 @@ jobs:
 
       - name: Clone installer repository
         env:
-          GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INSTALLER_REPOSITORY: ${{ secrets.INSTALLER_REPOSITORY }}
         run: |
           url="https://${GITHUB_USER}:${GITHUB_TOKEN}@${INSTALLER_REPOSITORY}.git"
           cd $RUNNER_WORKSPACE
           git clone $url
           cd $(basename $INSTALLER_REPOSITORY)
-          git config user.name "${GITHUB_USER}"
-          git config user.email "${GITHUB_USER}@appscode.com"
+          git config user.name "1gtm"
+          git config user.email "1gtm@appscode.com"
 
       - name: Update crds
         env:
-          GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INSTALLER_REPOSITORY: ${{ secrets.INSTALLER_REPOSITORY }}
         run: |
           export INSTALLER_ROOT=$RUNNER_WORKSPACE/$(basename $INSTALLER_REPOSITORY)
